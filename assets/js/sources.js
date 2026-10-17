@@ -27,19 +27,20 @@
 
   /* Runs tasks with limited concurrency and a minimum gap between starts. */
   async function pool(items, limit, gap, fn) {
-    var out = new Array(items.length), next = 0, last = 0;
+    var out = new Array(items.length), next = 0, last = 0, errors = 0;
     async function worker() {
       while (next < items.length) {
         var i = next++;
         var wait = last + gap - Date.now();
         last = Math.max(Date.now(), last + gap);
         if (wait > 0) await sleep(wait);
-        try { out[i] = await fn(items[i], i); } catch (e) { out[i] = null; }
+        try { out[i] = await fn(items[i], i); } catch (e) { out[i] = null; errors++; }
       }
     }
     var ws = [];
     for (var k = 0; k < Math.min(limit, items.length); k++) ws.push(worker());
     await Promise.all(ws);
+    if (items.length && errors === items.length) throw new Error("No response");
     return out;
   }
 
