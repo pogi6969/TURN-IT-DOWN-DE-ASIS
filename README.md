@@ -29,7 +29,7 @@ Everything runs in the browser. Only search phrases leave the device.
 
 ## Publish
 
-Installing the app needs HTTPS. With GitHub Pages: Settings → Pages → Build and deployment → Deploy from a branch → `main` and `/ (root)` → Save.
+The site is published by GitHub Pages from the `gh-pages` branch, which carries the same files as `main`. After changing `main`, publish with `git push origin main:gh-pages`.
 
 - Website: https://pogi6969.github.io/TURN-IT-DOWN-DE-ASIS/
 - App: https://pogi6969.github.io/TURN-IT-DOWN-DE-ASIS/app/
