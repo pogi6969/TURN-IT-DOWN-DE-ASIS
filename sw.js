@@ -1,7 +1,7 @@
 /* Turn It Down service worker: keeps the website, the app, the engines, the fonts and the icons so the
    app opens and builds reports without a connection. Pages come from the network when online.
    Bump VERSION after changing any file. */
-var VERSION = "tid-v1";
+var VERSION = "tid-v2";
 var PRECACHE = [
   "./",
   "app/",
