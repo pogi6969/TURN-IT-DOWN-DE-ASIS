@@ -103,8 +103,8 @@ def export():
 
 
 BOUGHT_G = {"drive motors JGA25-370 x4": 4 * 95, "conveyor motors JGA25-370 x2": 2 * 95,
-            "Raspberry Pi 4 + microSD": 50, "Pi camera + USB webcam": 20 + 60, "MG90S servos x4": 4 * 14,
-            "PCA9685": 10, "L298N x2": 2 * 33, "buck converters x2": 2 * 20, "3S2P 18650 pack + BMS": 300,
+            "Raspberry Pi Zero 2 W + microSD": 15, "Pi camera + USB webcam": 20 + 60, "SG90 servos x4": 4 * 9,
+            "PCA9685": 10, "L298N x2": 2 * 33, "LM2596 buck converters x2": 2 * 15, "3S1P 18650 pack + BMS": 160,
             "wiring, switch, fuse, IR sensor": 130, "M6 rod axles + nuts": 120, "1.75 mm PETG filament pins (71)": 71 * 0.3,
             "screws": 90, "LED strip": 10, "deck 5 mm PVC foam": 0}
 

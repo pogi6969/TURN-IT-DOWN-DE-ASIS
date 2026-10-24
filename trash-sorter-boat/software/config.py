@@ -24,7 +24,7 @@ SETTLE_S = 0.1                 # extra belt run after the trigger; raise it if i
 # --- flap servos on the PCA9685 --------------------------------------------
 SERVO_CHANNELS = {1: 0, 2: 1, 3: 2, 4: 3}      # bin number -> PCA9685 channel
 SERVO_CLOSED = {1: 90, 2: 90, 3: 90, 4: 90}    # degrees, trim after assembly
-SERVO_OPEN = {1: 150, 2: 30, 3: 150, 4: 30}    # port flaps swing one way, starboard the other (60 deg)
+SERVO_OPEN = {1: 150, 2: 30, 3: 150, 4: 30}    # SG90 servos; port flaps swing one way, starboard the other (60 deg)
 # seconds of C2 travel needed after the flap opens, measured from the camera stop
 TRAVEL_S = {1: 3.5, 2: 3.5, 3: 5.5, 4: 5.5}
 
@@ -40,5 +40,5 @@ FALLBACK_BIN = 4
 
 # --- cameras ---------------------------------------------------------------
 NAV_CAMERA_INDEX = 0           # USB webcam (/dev/video0)
-NAV_SIZE = (640, 480)
+NAV_SIZE = (480, 360)          # keeps the Pi Zero 2 W's CPU free for the classifier
 SORT_SIZE = (640, 480)         # Pi camera on the CSI port

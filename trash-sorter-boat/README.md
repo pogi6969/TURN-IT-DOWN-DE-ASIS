@@ -33,27 +33,27 @@ Check the size, weight and power limits against the official OCNR sheet.
 |---|---|
 | Hull | Catamaran, 2 pontoons of 630 × 115 × 100 mm, each printed as 3 sealed segments |
 | Overall size | 650 L × 424 W × 315 H mm (on land) |
-| Dry mass | ≈ 6.2 kg (≈ 4.1 kg printed parts, 2.1 kg bought parts) |
+| Dry mass | ≈ 6.0 kg (≈ 4.1 kg printed parts, 1.9 kg bought parts) |
 | Buoyancy | 13.1 kg to the deck, about 2× the boat's weight |
-| Draft (how deep it sits) | 48 mm dry, 52 mm with 500 g of trash. The drive motors sit at 65 mm, so they stay 13 mm above the water |
+| Draft (how deep it sits) | 47 mm dry, 51 mm with 500 g of trash. The drive motors sit at 65 mm, so they stay 14 mm above the water |
 | Stability | Metacentric height ≈ 190 mm (very stable, because the pontoons are far apart) |
 | Drive | 4 × JGA25-370 12 V 60 rpm motors with Ø176 mm paddle wheels, tank steering. Ground clearance 10 mm |
 | Intake belt C1 | 80 mm wide printed link belt, 29 links (7 with cleats), 50° incline, ≈ 64 mm/s |
 | Sorting belt C2 | 80 mm wide, 39 links, 310 mm between drums, ≈ 56 mm/s |
 | Bins | 4 removable buckets, each 93 × 99 × 74 mm inside (≈ 0.65 L) |
 | Item size | Up to about 75 mm wide, 70 mm long and 50 mm tall: caps, small bottles, cans, cups, wrappers, foam |
-| Electronics | Raspberry Pi 4, Pi camera (sorting), USB webcam (navigation), PCA9685 servo board, 2 × L298N, 3S2P 18650 battery |
-| Run time | About 2 h on a 3S2P pack, at roughly 2 A average |
+| Electronics | Raspberry Pi Zero 2 W, Pi camera (sorting), USB webcam (navigation), PCA9685 servo board, 2 × L298N, 3S1P 18650 battery |
+| Run time | About 1 h on a 3S1P pack, at roughly 2 A average (about 2 h with a 3S2P pack) |
 
 ![afloat](renders/04_side_afloat.png)
 
-## 4. Materials list and local suppliers
+## 4. Materials list and local suppliers (affordable build)
 
-Prices are approximate Philippine online prices (October 2026). Only the Raspberry Pi 4 price is confirmed: MakerLab lists the Pi 4 from ₱5,990. Check the others with the store before you buy.
+Prices are approximate Philippine online prices (October 2026). Check them with the store before you buy.
 
 **Suppliers:**
 - **MakerLab Electronics** ([makerlab.ph](https://makerlab.ph), also on Shopee and Lazada): Raspberry Pi, cameras, motors, drivers, servos, filament.
-- **Circuitrocks** ([circuit.rocks](https://circuit.rocks/collections/raspberry-pi-4)): Raspberry Pi and cameras.
+- **Circuitrocks** ([circuit.rocks](https://circuit.rocks)): Raspberry Pi and cameras.
 - **e-Gizmo Mechatronix Central:** motor drivers, sensors, batteries.
 - **Hardware stores** (Ace Hardware, Wilcon Depot, Handyman): threaded rod, screws, epoxy.
 - **Sign shops:** Sintra (PVC foam) board.
@@ -62,45 +62,50 @@ Prices are approximate Philippine online prices (October 2026). Only the Raspber
 
 | Part | Qty | Approx. ₱ | Where |
 |---|---|---|---|
-| Raspberry Pi 4 Model B 4 GB | 1 | 5,990 | MakerLab, Circuitrocks |
-| microSD card 32 GB (Raspberry Pi OS 64-bit) | 1 | 350 | any |
-| Pi camera module OV5647 5 MP + 30 cm ribbon (sorting camera) | 1 | 450 | MakerLab, Circuitrocks |
-| USB webcam 720p (navigation camera) | 1 | 550 | any computer shop |
+| Raspberry Pi Zero 2 W (+ header pins) | 1 | 1,700 | MakerLab, Circuitrocks |
+| microSD card 16 GB (Raspberry Pi OS 64-bit) | 1 | 250 | any |
+| Pi camera OV5647 5 MP + Pi Zero camera cable (sorting camera) | 1 | 500 | MakerLab, Circuitrocks |
+| USB webcam 480p/720p + micro-USB OTG adapter (navigation camera) | 1 | 400 | any computer shop |
 | PCA9685 16-channel servo driver | 1 | 250 | MakerLab, e-Gizmo |
-| MG90S metal-gear micro servo (bin doors) | 4 | 720 | MakerLab |
+| SG90 micro servo (bin doors) | 4 | 320 | MakerLab |
 | L298N dual motor driver (1 for drive, 1 for conveyors) | 2 | 300 | MakerLab, e-Gizmo |
 | JGA25-370 gear motor, 12 V, 60 rpm (wheels) | 4 | 1,800 | MakerLab, Shopee |
 | JGA25-370 gear motor, 12 V, 30 rpm (conveyors) | 2 | 900 | MakerLab, Shopee |
-| XL4015 5 A buck converter, set to 5.1 V (Pi) | 1 | 200 | MakerLab |
-| LM2596 buck converter, set to 5.5 V (servos + LEDs) | 1 | 100 | MakerLab |
+| LM2596 buck converter (one set to 5.1 V for the Pi, one to 5.5 V for servos + LEDs) | 2 | 200 | MakerLab |
 | FC-51 IR obstacle sensor (item at camera) | 1 | 50 | MakerLab, e-Gizmo |
 | 5 V white LED strip, 20 cm (camera lighting) | 1 | 80 | any |
-| 18650 Li-ion cells, genuine 2,500 mAh | 6 | 1,500 | e-Gizmo, battery shops |
+| 18650 Li-ion cells, genuine 2,500 mAh (3S1P) | 3 | 750 | e-Gizmo, battery shops |
 | 3S 20 A BMS + nickel strip | 1 | 150 | e-Gizmo, Shopee |
 | 12.6 V 2 A Li-ion charger + DC jack | 1 | 350 | Shopee |
 | Rocker switch, inline blade fuse holder + 10 A fuse | 1 | 120 | any |
 | Hook-up wire, Dupont jumpers, JST plugs, heat shrink | 1 set | 300 | any |
-| **Electronics subtotal** | | **≈ 14,160** | |
+| **Electronics subtotal** | | **≈ 8,420** | |
 
 ### Mechanical
 
 | Part | Qty | Approx. ₱ | Where |
 |---|---|---|---|
-| PETG filament, 1.75 mm (4.1 kg used) | 5 kg | 4,250 | MakerLab |
+| PLA filament, 1.75 mm (4.1 kg used) | 5 kg | 3,250 | MakerLab |
 | Sintra (PVC foam) board, 5 mm, piece at least 650 × 370 mm (deck) | 1 | 400 | sign shop, Lazada |
 | M6 threaded rod, 1 m (4 drum axles) + 12 M6 nuts and washers | 1 | 150 | hardware store |
 | M3 screw and nut assortment (8–20 mm) | 1 | 250 | hardware store, MakerLab |
 | M2 screws (servo tabs, horns) + 6 × M3 grub screws | 1 | 110 | MakerLab |
-| Two-part epoxy (sealing segment joints, coating pontoons) | 1 | 250 | hardware store |
+| Two-part epoxy (segment joints + a waterproof coat over the PLA) | 1 | 250 | hardware store |
 | Hot glue sticks, electrical tape, petroleum jelly | 1 | 130 | any |
-| **Mechanical subtotal** | | **≈ 5,540** | |
-| **Total** | | **≈ ₱19,700** | |
+| **Mechanical subtotal** | | **≈ 4,540** | |
+| **Total** | | **≈ ₱12,960** | |
 
-The belt pins are 84 mm pieces of the same PETG filament, so they cost nothing extra. The Pi 4 is about 30% of the total cost.
+That is about ₱6,700 less than the first version of this design. The belt pins are 84 mm pieces of the same filament, so they cost nothing extra. The software is unchanged on the Pi Zero 2 W. It classifies about 2–3 frames per second, so each item takes about 2 s at the camera.
+
+**Optional upgrades:**
+- Raspberry Pi 4 (+₱4,300): faster sorting. Its board holes differ: change `PI_HOLES` in `cad/electronics.py` to 58 × 49 mm.
+- MG90S metal-gear servos (+₱400).
+- PETG instead of PLA (+₱1,000): handles water better.
+- A 3S2P pack (+₱750): doubles the run time.
 
 ## 5. Printed parts (`stl/`)
 
-PETG is best for water. Use 2–3 walls and 15% infill, except the pontoons, which take 3 walls, 5 top and 5 bottom layers, and 5% gyroid infill. Each pontoon segment then prints as its own sealed air chamber, so one leak won't sink the boat. No part needs supports. Every part fits a 220 × 220 mm bed (Ender-3 class). The renders and `stl/assembly_preview_DO_NOT_PRINT.stl` are for viewing only.
+Use PLA and coat the pontoons with epoxy, or use PETG if you can afford it. Use 2–3 walls and 15% infill, except the pontoons, which take 3 walls, 5 top and 5 bottom layers, and 5% gyroid infill. Each pontoon segment then prints as its own sealed air chamber, so one leak won't sink the boat. No part needs supports. Every part fits a 220 × 220 mm bed (Ender-3 class). The renders and `stl/assembly_preview_DO_NOT_PRINT.stl` are for viewing only.
 
 | File | Qty | Size (mm) | Filament (g, all copies) | Note |
 |---|---|---|---|---|
@@ -138,7 +143,7 @@ The deck is cut from Sintra board using `deck/deck_template_1to1.svg`. Print it 
 1. **Pontoons.** Leak-test each segment under water for 60 s. Glue the segments end to end with epoxy and the dowels (bow + mid + stern, per side). Brush a thin epoxy coat over the outside.
 2. **Drive motors.** Put each JGA25-370 in its pocket with the gearbox face against the outer wall. Fit 2 × M3 screws through the slots, and put a saddle on top. Then fit the paddle wheels: the hub faces the hull, and an M3 grub screw goes onto the shaft flat.
 3. **Deck.** Screw the deck onto the pontoon tops with M3 × 16 self-tapping screws (36 holes). The deck clamps the motor saddles down. Pass the motor wires up through the 10 mm holes.
-4. **Belts.** Join links with 84 mm pieces of 1.75 mm PETG filament. Push each piece through, then melt both ends flat with a soldering iron.
+4. **Belts.** Join links with 84 mm pieces of 1.75 mm filament. Push each piece through, then melt both ends flat with a soldering iron.
    - C1: 29 links, with a cleat link at every 4th position.
    - C2: 39 plain links.
    - Wrap each belt around its drums before closing the last joint. The cleats and the plate's flat face point outward.
@@ -150,7 +155,7 @@ The deck is cut from Sintra board using `deck/deck_template_1to1.svg`. Print it 
 7. **Sorter.**
    1. Screw both sorter frames to the deck.
    2. Drop each flap's bottom pin into its pivot hole, then lay the cover over the flap posts.
-   3. Screw the servo bridges onto the cover posts and hang the MG90S servos shaft-down. Put a single-arm horn in each post's slot (M2).
+   3. Screw the servo bridges onto the cover posts and hang the SG90 servos shaft-down. Put a single-arm horn in each post's slot (M2).
    4. Set each servo to 90° before fitting the horn, with the door closed.
    5. Slide the buckets in from the outside.
 8. **Electronics.** Fit the electronics box (port bow deck) and the battery box (starboard bow deck). Mount the Pi camera on the mast over the camera zone, with the LED strip in the slots. Mount the FC-51 behind the window in the starboard wall of the camera zone, and the webcam on the bracket on the port lid. Seal every wire hole with hot glue.
@@ -161,10 +166,10 @@ The deck is cut from Sintra board using `deck/deck_template_1to1.svg`. Print it 
 
 | From | To |
 |---|---|
-| 3S2P pack → BMS → 10 A fuse → rocker switch | 12 V bus |
-| 12 V bus | L298N #1 VS, L298N #2 VS (keep their 5 V jumpers), XL4015 in, LM2596 in |
-| XL4015 out (5.1 V) | Pi 5 V (pin 2) + GND (pin 6) |
-| LM2596 out (5.5 V) | PCA9685 V+ (servo power) + LED strip |
+| 3S1P pack → BMS → 10 A fuse → rocker switch | 12 V bus |
+| 12 V bus | L298N #1 VS, L298N #2 VS (keep their 5 V jumpers), both LM2596 inputs |
+| LM2596 #1 out (5.1 V) | Pi Zero 5 V (pin 2) + GND (pin 6) |
+| LM2596 #2 out (5.5 V) | PCA9685 V+ (servo power) + LED strip |
 | PCA9685 VCC / SDA / SCL | Pi 3.3 V (pin 1) / GPIO2 (pin 3) / GPIO3 (pin 5) |
 | PCA9685 ch 0, 1, 2, 3 | servos for bins 1, 2, 3, 4 |
 | L298N #1 IN1, IN2, ENA | GPIO5, GPIO6, GPIO12 (remove the ENA jumper). OUT1/2 → both port wheel motors in parallel |
@@ -172,13 +177,13 @@ The deck is cut from Sintra board using `deck/deck_template_1to1.svg`. Print it 
 | L298N #2 IN1, IN2, ENA | GPIO23, GPIO24, GPIO18. OUT1/2 → intake (C1) motor |
 | L298N #2 IN3, IN4, ENB | GPIO16, GPIO26, GPIO19. OUT3/4 → sorting (C2) motor |
 | FC-51 VCC / GND / OUT | Pi 3.3 V (pin 17) / GND / GPIO17 |
-| Pi camera / webcam | CSI port / any USB port |
+| Pi camera / webcam | Pi Zero camera port (22-pin cable) / the micro-USB data port via the OTG adapter |
 
 Connect all grounds together. If a motor runs backward, swap its two wires.
 
 ## 8. Software (`software/`)
 
-1. Flash Raspberry Pi OS (64-bit) and copy this folder to `~/trash-sorter-boat`. Then run `cd ~/trash-sorter-boat/software && ./setup.sh`. The script installs the libraries, turns on I²C, creates the **TRASHBOAT** Wi-Fi hotspot (password `boat12345`) and starts the app on every boot.
+1. Flash Raspberry Pi OS (64-bit) on the Pi Zero 2 W and copy this folder to `~/trash-sorter-boat`. Then run `cd ~/trash-sorter-boat/software && ./setup.sh`. The script installs the libraries, turns on I²C, creates the **TRASHBOAT** Wi-Fi hotspot (password `boat12345`) and starts the app on every boot.
 2. **Train the camera.**
    1. Run `python3 collect.py "Plastic bottle"` (then the same for `Can`, `Paper`, `Other` and `Empty`, the bare belt). Take 80 or more photos of each class on the belt.
    2. Upload the photos to Google Teachable Machine (Image project) and train.

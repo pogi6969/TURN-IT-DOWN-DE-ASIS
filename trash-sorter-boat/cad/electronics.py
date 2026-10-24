@@ -10,7 +10,7 @@ BOX_X = (120.0, 300.0)
 BOX_Y = (62.0, 148.0)
 BOX_H = 60.0
 WALL = 2.4
-PI_HOLES = [(0, 0), (58, 0), (0, 49), (58, 49)]            # Raspberry Pi 4, M2.5
+PI_HOLES = [(0, 0), (58, 0), (0, 23), (58, 23)]            # Raspberry Pi Zero 2 W, M2.5
 L298_HOLES = [(0, 0), (37, 0), (0, 37), (37, 37)]          # L298N module, M3
 CAM_X = (CAM_ZONE[0] + CAM_ZONE[1]) / 2                    # sorting camera over the camera zone
 CAM_Z = C2_Z_SURF + 108.0
@@ -37,7 +37,7 @@ def _standoffs(holes, ox, oy, r_hole, h=6.0):
 
 def electronics_box():
     m = _shell(BOX_H)
-    ox, oy = BOX_X[1] - 14 - 58, BOX_Y[0] + 18                 # Pi 4 at the bow end
+    ox, oy = BOX_X[1] - 14 - 58, BOX_Y[0] + 30                 # Pi Zero 2 W at the bow end
     a, c1 = _standoffs(PI_HOLES, ox, oy, 1.1)
     b, c2 = _standoffs(L298_HOLES, BOX_X[0] + 10, BOX_Y[0] + 8, 1.25)        # drive L298N
     c, c3 = _standoffs(L298_HOLES, BOX_X[0] + 58, BOX_Y[0] + 8, 1.25)        # conveyor L298N
