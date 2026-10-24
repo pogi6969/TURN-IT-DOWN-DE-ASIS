@@ -1,0 +1,13 @@
+[Unit]
+Description=Trash sorter boat control
+After=network-online.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/trash-sorter-boat/software
+ExecStart=/home/pi/boatenv/bin/python app.py
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
