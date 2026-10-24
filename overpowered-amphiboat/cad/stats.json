@@ -1,0 +1,129 @@
+{
+ "printed_g": 2027,
+ "dry_mass_g": 3407,
+ "draft_mm": 47.9,
+ "max_displacement_g": 9877,
+ "clashes": [],
+ "parts": [
+  {
+   "part": "hull_bow",
+   "qty": 1,
+   "size": [
+    180,
+    200,
+    110
+   ],
+   "grams": 364,
+   "fits": true,
+   "watertight": true
+  },
+  {
+   "part": "hull_mid",
+   "qty": 1,
+   "size": [
+    180,
+    200,
+    110
+   ],
+   "grams": 379,
+   "fits": true,
+   "watertight": true
+  },
+  {
+   "part": "hull_stern",
+   "qty": 1,
+   "size": [
+    180,
+    200,
+    110
+   ],
+   "grams": 437,
+   "fits": true,
+   "watertight": true
+  },
+  {
+   "part": "dowel",
+   "qty": 8,
+   "size": [
+    6,
+    6,
+    22
+   ],
+   "grams": 4,
+   "fits": true,
+   "watertight": true
+  },
+  {
+   "part": "bay_lid",
+   "qty": 1,
+   "size": [
+    176,
+    194,
+    10
+   ],
+   "grams": 93,
+   "fits": true,
+   "watertight": true
+  },
+  {
+   "part": "pocket_cover",
+   "qty": 2,
+   "size": [
+    56,
+    196,
+    36
+   ],
+   "grams": 108,
+   "fits": true,
+   "watertight": true
+  },
+  {
+   "part": "wheel",
+   "qty": 4,
+   "size": [
+    176,
+    176,
+    40
+   ],
+   "grams": 450,
+   "fits": true,
+   "watertight": true
+  },
+  {
+   "part": "fan_duct_port",
+   "qty": 1,
+   "size": [
+    183,
+    148,
+    45
+   ],
+   "grams": 81,
+   "fits": true,
+   "watertight": true
+  },
+  {
+   "part": "fan_duct_stbd",
+   "qty": 1,
+   "size": [
+    183,
+    148,
+    45
+   ],
+   "grams": 81,
+   "fits": true,
+   "watertight": true
+  },
+  {
+   "part": "rear_guard",
+   "qty": 2,
+   "size": [
+    148,
+    148,
+    2
+   ],
+   "grams": 29,
+   "fits": true,
+   "watertight": true
+  }
+ ]
+}
