@@ -17,9 +17,9 @@ C2_FRONT_U = (-32.0, C2_TAIL_X - (SORTER_X[1] + 1.5))   # front frame stops 1.5 
 C2_BEAM_X = (SORTER_X[1] + 1.5, C2_HEAD_X + 30.0)
 
 
-def body(u0, u1):
+def body(u0, u1, W=BELT_W):
     """Slider bed inside the belt loop (I-beam) + side strips to the walls."""
-    h = BELT_W / 2 - 2
+    h = W / 2 - 2
     parts = [box(u0, u1, -h, h, 19.4, 22.4),               # bed surface under the top-run knuckles
              box(u0, u1, -h + 8, h - 8, -19, -16)]         # bottom flange
     for y in (18.0, h - 12):                               # webs
@@ -35,17 +35,17 @@ def body(u0, u1):
     return union(parts)
 
 
-def walls(u0, u1, w0, w1):
-    return box(u0, u1, FRAME_IN, FRAME_IN + FRAME_T, w0, w1) + box(u0, u1, -FRAME_IN - FRAME_T, -FRAME_IN, w0, w1)
+def walls(u0, u1, w0, w1, fin=FRAME_IN):
+    return box(u0, u1, fin, fin + FRAME_T, w0, w1) + box(u0, u1, -fin - FRAME_T, -fin, w0, w1)
 
 
-def axle_hole(u):
-    return cyl_y(3.3, -FRAME_IN - FRAME_T - 1, FRAME_IN + FRAME_T + 1, u, 0, 32)
+def axle_hole(u, fin=FRAME_IN):
+    return cyl_y(3.3, -fin - FRAME_T - 1, fin + FRAME_T + 1, u, 0, 32)
 
 
-def motor_face(u, side=1):
+def motor_face(u, side=1, fin=FRAME_IN):
     """JGA25 gearbox face on the outer side of a wall at drum axis u (port = +v)."""
-    y0, y1 = (FRAME_IN - 1, FRAME_IN + FRAME_T + 1) if side > 0 else (-FRAME_IN - FRAME_T - 1, -FRAME_IN + 1)
+    y0, y1 = (fin - 1, fin + FRAME_T + 1) if side > 0 else (-fin - FRAME_T - 1, -fin + 1)
     cut = cyl_y(4.0, y0, y1, u, 0, 32)
     for s in (-1, 1):
         a, b = u + s * 7.5, u + s * 9.5
@@ -60,25 +60,25 @@ def _trim_boat(local, which, box_boat):
 
 
 def _holes(points, r=1.7):
-    return union([cyl_y(r, -60, 60, u, w, 16) for (u, w) in points])
+    return union([cyl_y(r, -200, 200, u, w, 16) for (u, w) in points])
 
 
 def c1_lower():
-    m = walls(-32, SPLICE_U, W_BOT, W_TOP) + body(35, SPLICE_U)
+    m = walls(-32, SPLICE_U, W_BOT, W_TOP, C1_FRAME_IN) + body(35, SPLICE_U, C1_W)
     for (u, w) in C1_BOSSES_UW:                    # stand-offs to the pontoon inner walls
         for s in (-1, 1):
-            m = m + cyl_y(7.0, min(s * (FRAME_IN + FRAME_T - 1), s * P_IN), max(s * (FRAME_IN + FRAME_T - 1), s * P_IN), u, w, 32)
-    m = m - axle_hole(0) - _holes([p for p in SPLICE_HOLES if p[0] < SPLICE_U])
+            m = m + cyl_y(7.0, min(s * (C1_FRAME_IN + FRAME_T - 1), s * P_IN), max(s * (C1_FRAME_IN + FRAME_T - 1), s * P_IN), u, w, 32)
+    m = m - axle_hole(0, C1_FRAME_IN) - _holes([p for p in SPLICE_HOLES if p[0] < SPLICE_U])
     for (u, w) in C1_BOSSES_UW:
         m = m - cyl_y(1.7, -P_IN - 1, P_IN + 1, u, w, 16)
         for s in (-1, 1):                           # screw heads sit below the inner wall face
-            m = m - cyl_y(3.2, min(s * (FRAME_IN - 1), s * (FRAME_IN + 2.5)), max(s * (FRAME_IN - 1), s * (FRAME_IN + 2.5)), u, w, 24)
+            m = m - cyl_y(3.2, min(s * (C1_FRAME_IN - 1), s * (C1_FRAME_IN + 2.5)), max(s * (C1_FRAME_IN - 1), s * (C1_FRAME_IN + 2.5)), u, w, 24)
     return _trim_boat(m, "c1", box(-400, 312, -200, 200, 2, 400))
 
 
 def c1_upper():
-    m = walls(SPLICE_U, C1_C + 32, W_BOT, W_TOP) + body(SPLICE_U, C1_C - 35)
-    m = m - axle_hole(C1_C) - motor_face(C1_C, +1)
+    m = walls(SPLICE_U, C1_C + 32, W_BOT, W_TOP, C1_FRAME_IN) + body(SPLICE_U, C1_C - 35, C1_W)
+    m = m - axle_hole(C1_C, C1_FRAME_IN) - motor_face(C1_C, +1, C1_FRAME_IN)
     m = m - _holes([p for p in SPLICE_HOLES if p[0] > SPLICE_U])
     for ul in C1_LEGS_U:
         m = m - _holes([(ul - 8, -12), (ul + 8, -12)])
@@ -136,6 +136,8 @@ def c2_front():
     ir_u = C2_TAIL_X - (CAM_ZONE[1] + 14.0)                         # IR sensor window, starboard wall
     m = m - box(ir_u - 6, ir_u + 6, -FRAME_IN - FRAME_T - 1, -FRAME_IN + 1, 36, 44)
     m = m - cyl_y(1.7, -FRAME_IN - FRAME_T - 1, -FRAME_IN + 1, ir_u - 12, 40, 16)
+    for x in (CAM_ZONE[0] - 6.0, C1_HEAD[0] - 69.0):                  # hopper-wing screws (M3 x 6 self-tapping)
+        m = m - cyl_y(1.25, -FRAME_IN - FRAME_T - 1, FRAME_IN + FRAME_T + 1, C2_TAIL_X - x, 225.0 - C2_AXIS_Z - 6.0, 16)
     cam_x = (CAM_ZONE[0] + CAM_ZONE[1]) / 2
     for (um, wm) in ((C2_TAIL_X - cam_x + 10.0, 55.0), (C2_TAIL_X - cam_x - 10.0, 55.0)):   # camera mast bolts, port wall
         m = m - cyl_y(1.7, FRAME_IN - 1, FRAME_IN + FRAME_T + 1, um, wm, 16)

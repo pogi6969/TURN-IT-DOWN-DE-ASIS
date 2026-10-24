@@ -8,7 +8,7 @@
     115.0,
     100.0
    ],
-   "grams_each": 199.2,
+   "grams_each": 199.3,
    "watertight": true,
    "fits_bed": true,
    "note": ""
@@ -21,7 +21,7 @@
     115.0,
     100.0
    ],
-   "grams_each": 199.2,
+   "grams_each": 199.3,
    "watertight": true,
    "fits_bed": true,
    "note": ""
@@ -106,33 +106,46 @@
   },
   {
    "part": "belt_link",
-   "qty": 74,
+   "qty": 52,
    "size": [
     27.0,
     10.0,
     120.0
    ],
-   "grams_each": 7.5,
+   "grams_each": 9.4,
    "watertight": true,
    "fits_bed": true,
-   "note": "print on edge"
+   "note": "sorting belt, print on edge"
   },
   {
-   "part": "belt_link_cleat",
+   "part": "belt_link_intake",
+   "qty": 22,
+   "size": [
+    27.0,
+    10.0,
+    180.0
+   ],
+   "grams_each": 13.9,
+   "watertight": true,
+   "fits_bed": true,
+   "note": "intake belt, print on edge"
+  },
+  {
+   "part": "belt_link_intake_cleat",
    "qty": 7,
    "size": [
     27.0,
     30.0,
-    120.0
+    180.0
    ],
-   "grams_each": 13.1,
+   "grams_each": 22.3,
    "watertight": true,
    "fits_bed": true,
-   "note": "print on edge"
+   "note": "intake belt, print on edge"
   },
   {
    "part": "drum_drive",
-   "qty": 2,
+   "qty": 1,
    "size": [
     53.6,
     53.6,
@@ -141,11 +154,11 @@
    "grams_each": 70.0,
    "watertight": true,
    "fits_bed": true,
-   "note": ""
+   "note": "sorting belt"
   },
   {
    "part": "drum_idler",
-   "qty": 2,
+   "qty": 1,
    "size": [
     53.6,
     53.6,
@@ -154,17 +167,82 @@
    "grams_each": 71.0,
    "watertight": true,
    "fits_bed": true,
+   "note": "sorting belt"
+  },
+  {
+   "part": "drum_drive_intake",
+   "qty": 1,
+   "size": [
+    53.6,
+    53.6,
+    181.0
+   ],
+   "grams_each": 103.6,
+   "watertight": true,
+   "fits_bed": true,
+   "note": "180 mm intake"
+  },
+  {
+   "part": "drum_idler_intake",
+   "qty": 1,
+   "size": [
+    53.6,
+    53.6,
+    181.0
+   ],
+   "grams_each": 105.2,
+   "watertight": true,
+   "fits_bed": true,
+   "note": "180 mm intake"
+  },
+  {
+   "part": "guide_boom",
+   "qty": 2,
+   "size": [
+    207.0,
+    105.0,
+    8.0
+   ],
+   "grams_each": 38.9,
+   "watertight": true,
+   "fits_bed": true,
+   "note": "remove for land driving"
+  },
+  {
+   "part": "hopper_wing_port",
+   "qty": 1,
+   "size": [
+    56.0,
+    33.0,
+    52.5
+   ],
+   "grams_each": 8.0,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "hopper_wing_stbd",
+   "qty": 1,
+   "size": [
+    56.0,
+    33.0,
+    52.5
+   ],
+   "grams_each": 8.0,
+   "watertight": true,
+   "fits_bed": true,
    "note": ""
   },
   {
    "part": "c1_frame_lower",
    "qty": 1,
    "size": [
-    160.0,
+    214.0,
     96.0,
     118.8
    ],
-   "grams_each": 102.6,
+   "grams_each": 121.1,
    "watertight": true,
    "fits_bed": true,
    "note": "splice end on the bed"
@@ -173,11 +251,11 @@
    "part": "c1_frame_upper",
    "qty": 1,
    "size": [
-    130.0,
+    190.0,
     91.0,
     137.0
    ],
-   "grams_each": 131.0,
+   "grams_each": 150.7,
    "watertight": true,
    "fits_bed": true,
    "note": "splice end on the bed"
@@ -229,7 +307,7 @@
     120.0,
     147.5
    ],
-   "grams_each": 182.1,
+   "grams_each": 182.2,
    "watertight": true,
    "fits_bed": true,
    "note": "tail end on the bed"
@@ -460,10 +538,10 @@
    "qty": 1,
    "size": [
     180.0,
-    107.0,
+    104.0,
     60.0
    ],
-   "grams_each": 113.4,
+   "grams_each": 111.5,
    "watertight": true,
    "fits_bed": true,
    "note": "port"
@@ -473,10 +551,10 @@
    "qty": 1,
    "size": [
     180.0,
-    107.0,
+    104.0,
     60.0
    ],
-   "grams_each": 110.6,
+   "grams_each": 108.7,
    "watertight": true,
    "fits_bed": true,
    "note": "starboard"
@@ -486,10 +564,10 @@
    "qty": 2,
    "size": [
     180.0,
-    107.0,
+    104.0,
     7.5
    ],
-   "grams_each": 48.1,
+   "grams_each": 46.8,
    "watertight": true,
    "fits_bed": true,
    "note": ""
@@ -521,11 +599,11 @@
    "note": ""
   }
  ],
- "filament_g": 5368,
- "dry_mass_g": 7454,
+ "filament_g": 5867,
+ "dry_mass_g": 8044,
  "max_displacement_g": 16084,
- "draft_mm_dry": 47.2,
- "draft_mm_with 500 g trash": 50.3,
+ "draft_mm_dry": 50.9,
+ "draft_mm_with 500 g trash": 53.9,
  "bought_parts_g": {
   "drive motors JGA25-370 x4": 380,
   "conveyor motors JGA25-370 x2": 190,
@@ -541,6 +619,6 @@
   "1.75 mm PETG filament pins (71)": 21,
   "screws": 90,
   "LED strip": 10,
-  "deck 5 mm PVC foam": 748
+  "deck 5 mm PVC foam": 838
  }
 }

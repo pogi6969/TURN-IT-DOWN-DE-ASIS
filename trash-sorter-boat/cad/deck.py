@@ -39,6 +39,10 @@ def holes():
     for s in (-1, 1):                                              # drive-motor wire holes over the pockets
         h.append((AXLE_X, s * (POCKET_Y0 + 8), 5.0))               # bow: inside the electronics/battery boxes
         h.append((-AXLE_X, s * (SORTER_OUT + 8), 5.0))            # stern: outboard of the sorter frames
+    import collector
+    for (bx, by) in collector.boom_hole_points():                   # guide-boom tabs
+        for s in (-1, 1):
+            h.append((bx, s * by, 1.6))
     return h
 
 

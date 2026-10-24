@@ -18,6 +18,7 @@ import electronics as el
 import frames as fr
 import hull
 import sorter as so
+import collector as co
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 STL = os.path.join(ROOT, "stl")
@@ -40,10 +41,16 @@ def print_parts():
         "dowel": (hull.dowel(), 8, ""),
         "motor_saddle": (hull.motor_saddle().rotate([180, 0, 0]), 4, ""),
         "paddle_wheel": (hull.paddle_wheel(), 4, ""),
-        "belt_link": (belt.belt_link(False).rotate([90, 0, 0]), LINKS_C1 - LINKS_C1 // CLEAT_EVERY + LINKS_C2, "print on edge"),
-        "belt_link_cleat": (belt.belt_link(True).rotate([90, 0, 0]), LINKS_C1 // CLEAT_EVERY, "print on edge"),
-        "drum_drive": (belt.drum(True), 2, ""),
-        "drum_idler": (belt.drum(False), 2, ""),
+        "belt_link": (belt.belt_link(False).rotate([90, 0, 0]), LINKS_C2, "sorting belt, print on edge"),
+        "belt_link_intake": (belt.belt_link(False, C1_W).rotate([90, 0, 0]), LINKS_C1 - LINKS_C1 // CLEAT_EVERY, "intake belt, print on edge"),
+        "belt_link_intake_cleat": (belt.belt_link(True, C1_W).rotate([90, 0, 0]), LINKS_C1 // CLEAT_EVERY, "intake belt, print on edge"),
+        "drum_drive": (belt.drum(True), 1, "sorting belt"),
+        "drum_idler": (belt.drum(False), 1, "sorting belt"),
+        "drum_drive_intake": (belt.drum(True, C1_W), 1, "180 mm intake"),
+        "drum_idler_intake": (belt.drum(False, C1_W), 1, "180 mm intake"),
+        "guide_boom": (co.boom_local().translate([0, 0, -DECK_Z]).rotate([90, 0, 0]), 2, "remove for land driving"),
+        "hopper_wing_port": (co.hopper_wing(), 1, ""),
+        "hopper_wing_stbd": (mirror_y(co.hopper_wing()), 1, ""),
         "c1_frame_lower": (fr.c1_lower().transform(_swap([[0, 1, 0], [0, 0, 1], [-1, 0, 0]])), 1, "splice end on the bed"),
         "c1_frame_upper": (fr.c1_upper().transform(_swap([[0, 1, 0], [0, 0, 1], [1, 0, 0]])), 1, "splice end on the bed"),
         "c1_splice": (fr.c1_splice().transform(_swap([[1, 0, 0], [0, 0, 1], [0, 1, 0]])), 2, ""),
@@ -126,7 +133,7 @@ def mass_and_draft(print_g):
         lo, hi = 0.0, P_H
         for _ in range(40):
             mid = (lo + hi) / 2
-            v = (pontoons ^ box(-400, 400, -200, 200, -1, mid)).volume() / 1000.0
+            v = (pontoons ^ box(-1000, 1000, -1000, 1000, -1, mid)).volume() / 1000.0
             lo, hi = (mid, hi) if v < mass_g else (lo, mid)
         return lo
 

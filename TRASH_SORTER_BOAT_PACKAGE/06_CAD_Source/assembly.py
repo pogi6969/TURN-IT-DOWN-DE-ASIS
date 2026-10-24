@@ -10,6 +10,7 @@ import electronics as el
 import frames as fr
 import hull
 import sorter as so
+import collector as co
 
 DRUM_TO_LOCAL = matrix(np.array([[1, 0, 0], [0, 0, 1], [0, 1, 0]], float), [0, 0, 0])
 
@@ -22,8 +23,8 @@ def _conv(m, which):
     return m.transform(conveyor_matrix(which))
 
 
-def _links(which, c_dist, n, cleat_every=None):
-    plain, cleat = belt.belt_link(False), belt.belt_link(True)
+def _links(which, c_dist, n, cleat_every=None, width=BELT_W):
+    plain, cleat = belt.belt_link(False, width), belt.belt_link(True, width)
     out = Manifold()
     for i, (p0, p1) in enumerate(belt.belt_path(c_dist, n)):
         p0, p1 = np.array(p0), np.array(p1)
@@ -36,12 +37,12 @@ def _links(which, c_dist, n, cleat_every=None):
     return _conv(out, which)
 
 
-def _drum(drive, u, which, phase=0.0):
-    return _conv(belt.drum(drive).rotate([0, 0, phase]).transform(DRUM_TO_LOCAL).translate([u, 0, 0]), which)
+def _drum(drive, u, which, phase=0.0, width=BELT_W):
+    return _conv(belt.drum(drive, width).rotate([0, 0, phase]).transform(DRUM_TO_LOCAL).translate([u, 0, 0]), which)
 
 
-def _motor_local(u, which):
-    return _conv(cyl_y(MOTOR_D / 2, FRAME_IN + FRAME_T, FRAME_IN + FRAME_T + MOTOR_LEN, u, 0, 32), which)
+def _motor_local(u, which, fin=FRAME_IN):
+    return _conv(cyl_y(MOTOR_D / 2, fin + FRAME_T, fin + FRAME_T + MOTOR_LEN, u, 0, 32), which)
 
 
 def both(m):
@@ -77,16 +78,20 @@ def parts(open_flap=True):
     # intake conveyor C1
     add("c1_lower", _conv(fr.c1_lower(), "c1"), "frame")
     add("c1_upper", _conv(fr.c1_upper(), "c1"), "frame")
-    sp = _conv(fr.c1_splice().translate([0, FRAME_IN + FRAME_T, 0]), "c1")
+    sp = _conv(fr.c1_splice().translate([0, C1_FRAME_IN + FRAME_T, 0]), "c1")
     for s, m in zip(("port", "stbd"), both(sp)):
         add(f"c1_splice_{s}", m, "frame")
-    lg = fr.c1_leg().translate([0, FRAME_IN + FRAME_T, 0])
+    lg = fr.c1_leg().translate([0, C1_FRAME_IN + FRAME_T, 0])
     for s, m in zip(("port", "stbd"), both(lg)):
         add(f"c1_leg_{s}", m, "frame")
-    add("c1_drum_tail", _drum(False, 0, "c1"), "drum")
-    add("c1_drum_head", _drum(True, C1_C, "c1", 22.5 if (C1_C / PITCH) % 1 > 0.25 else 0.0), "drum")
-    add("c1_motor", _motor_local(C1_C, "c1"), "buy", False)
-    add("c1_belt", _links("c1", C1_C, LINKS_C1, CLEAT_EVERY), "belt")
+    add("c1_drum_tail", _drum(False, 0, "c1", width=C1_W), "drum")
+    add("c1_drum_head", _drum(True, C1_C, "c1", 22.5 if (C1_C / PITCH) % 1 > 0.25 else 0.0, C1_W), "drum")
+    add("c1_motor", _motor_local(C1_C, "c1", C1_FRAME_IN), "buy", False)
+    add("c1_belt", _links("c1", C1_C, LINKS_C1, CLEAT_EVERY, C1_W), "belt")
+    for s, m in zip(("port", "stbd"), both(co.boom())):
+        add(f"guide_boom_{s}", m, "flap")
+    for s, m in zip(("port", "stbd"), both(co.hopper_wing())):
+        add(f"hopper_wing_{s}", m, "frame")
     # sorting conveyor C2
     add("c2_front", _conv(fr.c2_front(), "c2"), "frame")
     for i in (0, 1):

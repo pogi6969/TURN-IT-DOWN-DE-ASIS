@@ -10,10 +10,14 @@ from manifold3d import Manifold, CrossSection
 
 from common import *
 
-SEG = 16.0
-KNUCKLE_LEN = SEG - 0.6
-A_SEGS = (-32.0, 0.0, 32.0)      # leading-pin knuckles
-B_SEGS = (-16.0, 16.0)           # trailing-pin knuckles
+def _segments(width):
+    """Odd number of knuckle segments across the belt: A (leading pin) at even
+    indices, B (trailing pin) at odd ones. Returns (seg, A centres, B centres)."""
+    n = int(round(width / 16.0))
+    n += 1 - n % 2
+    seg = width / n
+    c = [-width / 2 + seg * (k + 0.5) for k in range(n)]
+    return seg, c[0::2], c[1::2]
 
 
 def _ac_prism(pts, b0, b1):
@@ -29,8 +33,10 @@ def _d_knuckle(a0, b0, b1):
     return _ac_prism(pts, b0, b1)
 
 
-def belt_link(cleat=False):
-    half = BELT_W / 2
+def belt_link(cleat=False, width=BELT_W):
+    half = width / 2
+    seg, A_SEGS, B_SEGS = _segments(width)
+    KNUCKLE_LEN = seg - 0.6
     m = _ac_prism([(-6, PLATE_IN), (6, PLATE_IN), (6, PLATE_OUT), (-6, PLATE_OUT)], -half, half)
     for bc in A_SEGS:
         b0, b1 = max(bc - KNUCKLE_LEN / 2, -half + 0.3), min(bc + KNUCKLE_LEN / 2, half - 0.3)
@@ -46,7 +52,7 @@ def belt_link(cleat=False):
         m = m + box(-1.5, 1.5, -half + 1, half - 1, PLATE_OUT - 0.1, PLATE_OUT + CLEAT_H)
         m = m + box(-3.5, 3.5, -half + 1, half - 1, PLATE_OUT - 0.1, PLATE_OUT + 3)   # fillet foot
     else:
-        for bc in (-24, -8, 8, 24):               # drain slots
+        for bc in [x for x in (A_SEGS + B_SEGS) if abs(x) < half - 6]:   # drain slots
             m = m - box(-1.25, 1.25, bc - 4, bc + 4, PLATE_IN - 1, PLATE_OUT + 1)
     return m
 
@@ -72,10 +78,10 @@ def sprocket_profile():
     return prof
 
 
-def drum(drive=False):
+def drum(drive=False, width=BELT_W):
     """Sprocket drum, axis along z (print standing). z = v; the motor side is +z."""
-    half = DRUM_W / 2
-    m = sprocket_profile().extrude(DRUM_W).translate([0, 0, -half])
+    half = (width - 2) / 2
+    m = sprocket_profile().extrude(2 * half).translate([0, 0, -half])
     m = m + cyl_z(8.0, -half - 1.5, half + 1.5, 0, 0, 48)          # hub stubs to the side walls
     if not drive:
         return m - cyl_z(3.3, -half - 2, half + 2, 0, 0, 32)       # M6 axle

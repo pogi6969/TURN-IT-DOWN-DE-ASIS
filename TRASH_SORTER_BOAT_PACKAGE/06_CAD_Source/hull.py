@@ -66,6 +66,9 @@ def pontoon_segment(kind):
         ax = AXLE_X if kind == "bow" else -AXLE_X
         m = m - _motor_pocket(ax)
     if kind == "bow":
+        import collector
+        for (bx, by) in collector.boom_hole_points():
+            m = m - cyl_z(1.25, P_H - 14, P_H + 1, bx, by, 16)
         for (u, w) in C1_BOSSES_UW:     # blind holes for the intake-frame bosses
             bx, bz = c1_point(u, w)
             m = m - cyl_y(1.3, P_IN - 1, P_IN + 14, bx, bz, 16)

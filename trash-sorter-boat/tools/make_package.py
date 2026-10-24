@@ -30,9 +30,12 @@ GROUPS = {
                ("motor_saddle", 4, "clamps the drive motors")],
     "2_Drive_Wheels": [("paddle_wheel", 4, "")],
     "3_Intake_Conveyor": [("c1_frame_lower", 1, ""), ("c1_frame_upper", 1, ""), ("c1_splice", 2, ""),
-                          ("c1_leg_port", 1, ""), ("c1_leg_stbd", 1, ""), ("drum_drive", 1, "top drum"),
-                          ("drum_idler", 1, "bottom drum"), ("belt_link", C.LINKS_C1 - C.LINKS_C1 // C.CLEAT_EVERY, ""),
-                          ("belt_link_cleat", C.LINKS_C1 // C.CLEAT_EVERY, "every 4th link")],
+                          ("c1_leg_port", 1, ""), ("c1_leg_stbd", 1, ""), ("drum_drive_intake", 1, "top drum, 180 mm"),
+                          ("drum_idler_intake", 1, "bottom drum, 180 mm"),
+                          ("belt_link_intake", C.LINKS_C1 - C.LINKS_C1 // C.CLEAT_EVERY, "180 mm links"),
+                          ("belt_link_intake_cleat", C.LINKS_C1 // C.CLEAT_EVERY, "every 4th link"),
+                          ("guide_boom", 2, "bow sweep booms, remove for land"),
+                          ("hopper_wing_port", 1, "funnel onto sorting belt"), ("hopper_wing_stbd", 1, "")],
     "4_Sorting_Conveyor": [("c2_front_frame", 1, "camera zone + chute"), ("c2_bed_beam_front", 1, ""), ("c2_bed_beam_rear", 1, ""),
                            ("c2_head_stand_drive", 1, "port"), ("c2_head_stand_idler", 1, "starboard"),
                            ("drum_drive", 1, "stern drum"), ("drum_idler", 1, "front drum"),
@@ -103,7 +106,7 @@ def report_markdown(rows):
     sec = {}
     sec["summary"] = f"""This report describes an affordable, 3D-printed amphibious boat. A conveyor at the bow collects floating trash. A camera on a second conveyor identifies each item, and a servo-driven door sorts it into one of 4 bins. It drives on land and in water on 4 paddle wheels, and it is steered from a phone with a live navigation camera.
 
-The design was modelled parametrically and checked in software: no parts overlap, every part fits a 220 × 220 mm printer bed, and the buoyancy was computed from the hull shape. Estimated materials cost is **≈ ₱13,710**, and **{d['filament_g'] / 1000:.1f} kg** of filament prints **{sum(r[2] for r in rows)} parts**."""
+The design was modelled parametrically and checked in software: no parts overlap, every part fits a 220 × 220 mm printer bed, and the buoyancy was computed from the hull shape. Estimated materials cost is **≈ ₱13,760**, and **{d['filament_g'] / 1000:.1f} kg** of filament prints **{sum(r[2] for r in rows)} parts**."""
     sec["calc"] = f"""### Buoyancy and draft
 The boat sinks until the water it pushes aside weighs as much as the boat (m = ρ·V). The waterline was found from the CAD pontoon volume by bisection.
 
@@ -162,7 +165,7 @@ That totals about **1.9 A** average. A 3S1P pack of 2.5 Ah cells gives **about 1
 | Cost efficiency | 10% |
 | Documentation | 20% |"""
     sec["verify"] = f"""**Checked in software:**
-- Interference check of all 73 assembly parts: 0 overlaps, with a door open and with all doors closed.
+- Interference check of all 77 assembly parts: 0 overlaps, with a door open and with all doors closed.
 - All {len(d['parts'])} STL files are watertight meshes and fit a 220 × 220 × 250 mm bed.
 - The sorting logic passes its unit tests, and the phone dashboard runs in mock mode.
 
@@ -186,7 +189,7 @@ That totals about **1.9 A** average. A 3S1P pack of 2.5 Ah cells gives **about 1
 ## 3. How it works
 {section(md, '1. How it works')}
 
-{img("07_intake_closeup.png", "Figure 2. Cleated intake conveyor between the pontoons.")}
+{img("07_intake_closeup.png", "Figure 2. Guide booms and the 180 mm cleated intake conveyor between the pontoons.")}
 {img("06_sorter_closeup.png", "Figure 3. Sorting conveyor with one bin door open (covers hidden).")}
 
 ## 4. Specifications

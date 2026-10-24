@@ -6,8 +6,8 @@ from manifold3d import Manifold
 
 from common import *
 
-BOX_X = (BOAT_L / 2 - 195.0, BOAT_L / 2 - 15.0)
-BOX_Y = (FRAME_IN + FRAME_T + 18.0, P_OUT - 5.0)
+BOX_X = (BOAT_L / 2 - 215.0, BOAT_L / 2 - 35.0)
+BOX_Y = (C1_FRAME_IN + FRAME_T + 18.0, P_OUT - 5.0)
 BOX_YC = (BOX_Y[0] + BOX_Y[1]) / 2
 BOX_H = 60.0
 WALL = 2.4

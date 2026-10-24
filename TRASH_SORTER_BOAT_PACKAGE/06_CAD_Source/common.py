@@ -16,7 +16,7 @@ SEG_L = 190.0
 SEG_X = [(-BOAT_L / 2 + i * SEG_L, -BOAT_L / 2 + (i + 1) * SEG_L) for i in range(4)]  # stern, mid, mid, bow
 P_W = 115.0               # pontoon width
 P_H = 100.0               # pontoon height
-P_IN = 80.0               # |y| of pontoon inner face (gap = 160 for the 120 mm intake)
+P_IN = 107.0              # |y| of pontoon inner face (gap = 214 for the 180 mm intake)
 P_OUT = P_IN + P_W        # 175, |y| of outer face
 SORTER_OUT = 178.0        # |y| of the sorter bays' open outer side
 POCKET_Y0 = P_OUT - 73.0  # inboard end of the drive-motor pockets
@@ -49,7 +49,9 @@ SURF_R = R_PIN + PLATE_OUT                        # 32.6, carrying surface over 
 CLEAT_H = 20.0
 PIN_HOLE = 2.2            # 2.0 mm bicycle-spoke or 1.75 mm filament pins
 DRUM_W = BELT_W - 2.0
-FRAME_IN = BELT_W / 2 + 1.0       # |v| of conveyor side-wall inner face
+FRAME_IN = BELT_W / 2 + 1.0       # |v| of conveyor side-wall inner face (sorting belt)
+C1_W = 180.0                      # intake (collection) belt width
+C1_FRAME_IN = C1_W / 2 + 1.0
 FRAME_T = 4.0
 
 # ------------------------------------------------------------------ conveyors

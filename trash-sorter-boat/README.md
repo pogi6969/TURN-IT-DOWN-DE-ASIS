@@ -6,7 +6,7 @@ A 3D-printed catamaran that scoops floating trash with a conveyor at the bow, ca
 
 ## 1. How it works
 
-1. **Intake conveyor (C1).** The conveyor sits between the two pontoons at a 50° angle. Its lower drum sits just below the waterline. Cleats every 4th link scoop floating items up out of the water, and holes in every link let the water drain.
+1. **Collection (C1).** Two guide booms at the bow sweep a 430 mm wide path and steer floating trash into a **180 mm wide** intake conveyor, which sits between the two pontoons at a 50° angle. Its lower drum sits just below the waterline. Cleats every 4th link scoop floating items up out of the water, and holes in every link let the water drain.
 2. **Transfer chute.** At the top, items slide down a short chute onto the sorting conveyor.
 3. **Sorting conveyor (C2).** This conveyor runs flat toward the stern. An IR sensor stops both conveyors when an item reaches the camera zone. The Pi camera looks down from 108 mm above the belt, with an LED strip for even light, and classifies the item on 5 frames. The majority vote picks the bin.
 4. **Sorting into bins.** Each bin is a box beside the belt with a door (flap) in its side wall. The door's servo swings it 60° across the belt. The moving belt pushes the item along the open door and into the bin, then the servo closes the door again. If the camera isn't sure (below 70% confidence), the item goes to bin 4 ("Other"). Anything that gets past every door falls into the reject tray at the stern.
@@ -32,13 +32,13 @@ Check the size, weight and power limits against the official OCNR sheet.
 | Item | Value |
 |---|---|
 | Hull | Catamaran, 2 pontoons of 760 × 115 × 100 mm, each printed as 4 sealed segments |
-| Overall size | 780 L × 464 W × 315 H mm (on land) |
-| Dry mass | ≈ 7.5 kg (≈ 5.4 kg printed parts, 2.1 kg bought parts) |
+| Overall size | 780 L × 518 W × 315 H mm without the booms; 930 mm long with them fitted |
+| Dry mass | ≈ 8.0 kg (≈ 5.9 kg printed parts, 2.2 kg bought parts) |
 | Buoyancy | 16.1 kg to the deck, about 2× the boat's weight |
-| Draft (how deep it sits) | 47 mm dry, 50 mm with 500 g of trash. The drive motors sit at 65 mm, so they stay 15 mm above the water |
-| Stability | Metacentric height ≈ 330 mm (very stable, because the pontoons are far apart) |
+| Draft (how deep it sits) | 51 mm dry, 54 mm with 500 g of trash. The drive motors sit at 65 mm, so they stay 11 mm above the water |
+| Stability | Metacentric height ≈ 470 mm (very stable, because the pontoons are far apart) |
 | Drive | 4 × JGA25-370 12 V 60 rpm motors with Ø176 mm paddle wheels, tank steering. Ground clearance 10 mm |
-| Intake belt C1 | **120 mm wide** printed link belt, 29 links (7 with cleats), 50° incline, ≈ 64 mm/s |
+| Collection | 2 removable guide booms (430 mm sweep) → **180 mm wide** intake belt, 29 links (7 with cleats), 50° incline, ≈ 64 mm/s. Hopper wings funnel it onto the 120 mm sorting belt |
 | Sorting belt C2 | **120 mm wide**, 52 links, 440 mm between drums, ≈ 56 mm/s |
 | Bins | 4 removable buckets, each 137 × 107 × 74 mm inside (≈ 1.1 L) |
 | Item size | Up to about 110 mm wide, 100 mm long and 50 mm tall: caps, bottles, cans, cups, wrappers, foam |
@@ -85,17 +85,17 @@ Prices are approximate Philippine online prices (October 2026). Check them with 
 
 | Part | Qty | Approx. ₱ | Where |
 |---|---|---|---|
-| PLA filament, 1.75 mm (5.4 kg used) | 6 kg | 3,900 | MakerLab |
-| Sintra (PVC foam) board, 5 mm, piece at least 780 × 410 mm (deck) | 1 | 500 | sign shop, Lazada |
+| PLA filament, 1.75 mm (5.9 kg used) | 6 kg | 3,900 | MakerLab |
+| Sintra (PVC foam) board, 5 mm, piece at least 780 × 465 mm (deck) | 1 | 550 | sign shop, Lazada |
 | M6 threaded rod, 1 m (4 drum axles) + 12 M6 nuts and washers | 1 | 150 | hardware store |
 | M3 screw and nut assortment (8–20 mm) | 1 | 250 | hardware store, MakerLab |
 | M2 screws (servo tabs, horns) + 6 × M3 grub screws | 1 | 110 | MakerLab |
 | Two-part epoxy (segment joints + a waterproof coat over the PLA) | 1 | 250 | hardware store |
 | Hot glue sticks, electrical tape, petroleum jelly | 1 | 130 | any |
-| **Mechanical subtotal** | | **≈ 5,290** | |
-| **Total** | | **≈ ₱13,710** | |
+| **Mechanical subtotal** | | **≈ 5,340** | |
+| **Total** | | **≈ ₱13,760** | |
 
-The conveyors are now 120 mm wide (was 80 mm), which adds about ₱750 over the 80 mm version for more filament and a bigger deck. The belt pins are 84 mm pieces of the same filament, so they cost nothing extra. The software is unchanged on the Pi Zero 2 W. It classifies about 2–3 frames per second, so each item takes about 2 s at the camera.
+The intake is 180 mm wide, and the guide booms sweep 430 mm; the sorting belt is 120 mm. Together these add about ₱800 over the 80 mm version, for more filament and a bigger deck. The belt pins are 84 mm pieces of the same filament, so they cost nothing extra. The software is unchanged on the Pi Zero 2 W. It classifies about 2–3 frames per second, so each item takes about 2 s at the camera.
 
 **Optional upgrades:**
 - Raspberry Pi 4 (+₱4,300): faster sorting. Its board holes differ: change `PI_HOLES` in `cad/electronics.py` to 58 × 49 mm.
@@ -117,12 +117,18 @@ Use PLA and coat the pontoons with epoxy, or use PETG if you can afford it. Use 
 | `dowel.stl` | 8 | 6 × 6 × 22 | 4 |  |
 | `motor_saddle.stl` | 4 | 26 × 40 × 22 | 26 |  |
 | `paddle_wheel.stl` | 4 | 176 × 176 × 34 | 411 |  |
-| `belt_link.stl` | 74 | 27 × 10 × 120 | 555 | print on edge |
-| `belt_link_cleat.stl` | 7 | 27 × 30 × 120 | 92 | print on edge |
-| `drum_drive.stl` | 2 | 54 × 54 × 121 | 140 |  |
-| `drum_idler.stl` | 2 | 54 × 54 × 121 | 142 |  |
-| `c1_frame_lower.stl` | 1 | 160 × 96 × 119 | 103 | splice end on the bed |
-| `c1_frame_upper.stl` | 1 | 130 × 91 × 137 | 131 | splice end on the bed |
+| `belt_link.stl` | 52 | 27 × 10 × 120 | 489 | sorting belt, print on edge |
+| `belt_link_intake.stl` | 22 | 27 × 10 × 180 | 306 | intake belt, print on edge |
+| `belt_link_intake_cleat.stl` | 7 | 27 × 30 × 180 | 156 | intake belt, print on edge |
+| `drum_drive.stl` | 1 | 54 × 54 × 121 | 70 | sorting belt |
+| `drum_idler.stl` | 1 | 54 × 54 × 121 | 71 | sorting belt |
+| `drum_drive_intake.stl` | 1 | 54 × 54 × 181 | 104 | 180 mm intake |
+| `drum_idler_intake.stl` | 1 | 54 × 54 × 181 | 105 | 180 mm intake |
+| `guide_boom.stl` | 2 | 207 × 105 × 8 | 78 | remove for land driving |
+| `hopper_wing_port.stl` | 1 | 56 × 33 × 52 | 8 |  |
+| `hopper_wing_stbd.stl` | 1 | 56 × 33 × 52 | 8 |  |
+| `c1_frame_lower.stl` | 1 | 214 × 96 × 119 | 121 | splice end on the bed |
+| `c1_frame_upper.stl` | 1 | 190 × 91 × 137 | 151 | splice end on the bed |
 | `c1_splice.stl` | 2 | 46 × 73 × 3 | 16 |  |
 | `c1_leg_port.stl` | 1 | 47 × 91 × 14 | 9 |  |
 | `c1_leg_stbd.stl` | 1 | 47 × 91 × 14 | 9 |  |
@@ -144,9 +150,9 @@ Use PLA and coat the pontoons with epoxy, or use PETG if you can afford it. Use 
 | `flap_stbd.stl` | 2 | 144 × 72 × 6 | 25 | bins 2 + 4 |
 | `bucket.stl` | 4 | 141 × 118 × 76 | 420 | handle faces outboard |
 | `reject_tray.stl` | 1 | 36 × 121 × 44 | 36 |  |
-| `electronics_box.stl` | 1 | 180 × 107 × 60 | 113 | port |
-| `battery_box.stl` | 1 | 180 × 107 × 60 | 111 | starboard |
-| `box_lid.stl` | 2 | 180 × 107 × 8 | 96 |  |
+| `electronics_box.stl` | 1 | 180 × 104 × 60 | 112 | port |
+| `battery_box.stl` | 1 | 180 × 104 × 60 | 109 | starboard |
+| `box_lid.stl` | 2 | 180 × 104 × 8 | 94 |  |
 | `camera_mast.stl` | 1 | 56 × 110 × 87 | 28 |  |
 | `nav_cam_bracket.stl` | 1 | 16 × 40 × 40 | 6 |  |
 
@@ -160,21 +166,22 @@ The deck is cut from Sintra board using `deck/deck_template_1to1.svg`. Print it 
 2. **Drive motors.** Put each JGA25-370 in its pocket with the gearbox face against the outer wall. Fit 2 × M3 screws through the slots, and put a saddle on top. Then fit the paddle wheels: the hub faces the hull, and an M3 grub screw goes onto the shaft flat.
 3. **Deck.** Screw the deck onto the pontoon tops with M3 × 16 self-tapping screws (48 holes). The deck clamps the motor saddles down. Pass the motor wires up through the 10 mm holes.
 4. **Belts.** Join links with 84 mm pieces of 1.75 mm filament. Push each piece through, then melt both ends flat with a soldering iron.
-   - C1: 29 links, with a cleat link at every 4th position.
+   - C1 (180 mm intake links): 29 links, with a cleat link at every 4th position.
    - C2: 52 plain links.
    - Wrap each belt around its drums before closing the last joint. The cleats and the plate's flat face point outward.
-5. **Intake (C1).**
+5. **Intake (C1)** (use the 180 mm `_intake` drums and links).
    1. Bolt the two frame halves together with the splice plates (M3 × 12, 8 per side). Fit the drums on M6 rod axles, with the drive drum's D-bore on the port side.
    2. Mount the 30 rpm motor on the port wall at the top drum and tighten its grub screw.
    3. Screw the lower stand-offs into the bow pontoons' inner walls (M3 × 16). Screw the legs to the upper walls and to the deck.
-6. **Sorting conveyor (C2).** Screw the front frame and the head stands to the deck. Bolt the bed beam's 3 ears through the sorter-frame inner walls. Fit the drums and belt. Mount the 30 rpm motor on the port head stand.
-7. **Sorter.**
+6. **Guide booms and hopper.** Screw each boom's tab to the bow deck corner (2 × M3 × 20 into the pontoon top). Take the booms off for land driving. Clip the 2 hopper wings over the sorting conveyor's guide walls at the chute, and fix each with 2 × M3 × 6 self-tapping screws.
+7. **Sorting conveyor (C2).** Screw the front frame and the head stands to the deck. Bolt the bed beam's 3 ears through the sorter-frame inner walls. Fit the drums and belt. Mount the 30 rpm motor on the port head stand.
+8. **Sorter.**
    1. Screw both sorter frames to the deck.
    2. Drop each flap's bottom pin into its pivot hole, then lay the cover over the flap posts.
    3. Screw the servo bridges onto the cover posts and hang the SG90 servos shaft-down. Put a single-arm horn in each post's slot (M2).
    4. Set each servo to 90° before fitting the horn, with the door closed.
    5. Slide the buckets in from the outside.
-8. **Electronics.** Fit the electronics box (port bow deck) and the battery box (starboard bow deck). Mount the Pi camera on the mast over the camera zone, with the LED strip in the slots. Mount the FC-51 behind the window in the starboard wall of the camera zone, and the webcam on the bracket on the port lid. Seal every wire hole with hot glue.
+9. **Electronics.** Fit the electronics box (port bow deck) and the battery box (starboard bow deck). Mount the Pi camera on the mast over the camera zone, with the LED strip in the slots. Mount the FC-51 behind the window in the starboard wall of the camera zone, and the webcam on the bracket on the port lid. Seal every wire hole with hot glue.
 
 ![intake](renders/07_intake_closeup.png)
 
@@ -217,7 +224,7 @@ Connect all grounds together. If a motor runs backward, swap its two wires.
 
 - Use genuine 18650 cells with the BMS and the fuse. Charge only out of the boat, with the 12.6 V charger.
 - Keep hands off the belts and wheels while powered. The dashboard's Sorting OFF button stops both conveyors, and the drive stops by itself if the phone link drops.
-- On land, turn Sorting OFF: the intake cleats pass only 7 mm above flat ground.
+- On land, turn Sorting OFF and remove the guide booms: they reach 150 mm ahead of the bow, and the intake cleats pass only 7 mm above flat ground.
 - Use it in calm, supervised water. PLA and PETG don't biodegrade, so recover any broken part.
 
 ## 10. Rebuilding the CAD
