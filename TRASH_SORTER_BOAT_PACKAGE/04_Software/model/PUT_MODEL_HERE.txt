@@ -1,0 +1,4 @@
+Copy the two files from Teachable Machine's "Export model -> TensorFlow Lite -> Floating point" download here:
+  model_unquant.tflite
+  labels.txt
+Class names must match LABEL_TO_BIN in config.py (and include an "Empty" class of the bare belt).

@@ -1,0 +1,3 @@
+# apt (Raspberry Pi OS): python3-opencv python3-picamera2 python3-flask python3-numpy python3-gpiozero
+adafruit-circuitpython-servokit
+ai-edge-litert        # TensorFlow Lite runtime (or: tflite-runtime)

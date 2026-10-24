@@ -36,7 +36,7 @@ Check the size, weight and power limits against the official OCNR sheet.
 | Dry mass | ≈ 6.0 kg (≈ 4.1 kg printed parts, 1.9 kg bought parts) |
 | Buoyancy | 13.1 kg to the deck, about 2× the boat's weight |
 | Draft (how deep it sits) | 47 mm dry, 51 mm with 500 g of trash. The drive motors sit at 65 mm, so they stay 14 mm above the water |
-| Stability | Metacentric height ≈ 190 mm (very stable, because the pontoons are far apart) |
+| Stability | Metacentric height ≈ 225 mm (very stable, because the pontoons are far apart) |
 | Drive | 4 × JGA25-370 12 V 60 rpm motors with Ø176 mm paddle wheels, tank steering. Ground clearance 10 mm |
 | Intake belt C1 | 80 mm wide printed link belt, 29 links (7 with cleats), 50° incline, ≈ 64 mm/s |
 | Sorting belt C2 | 80 mm wide, 39 links, 310 mm between drums, ≈ 56 mm/s |

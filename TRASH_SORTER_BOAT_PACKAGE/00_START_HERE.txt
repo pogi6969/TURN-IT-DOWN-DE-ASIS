@@ -1,0 +1,13 @@
+TRASH-SORTING AMPHIBIOUS BOAT - PACKAGE
+=========================================
+01_Report/                Trash_Sorter_Boat_Report.pdf - full design report (read this first)
+02_Print_Files/           STL files to print, one folder per subsystem.
+                          File names end with the number of copies (e.g. __x4 = print 4).
+                          Print_List.csv = every file, quantity, size, filament, settings.
+03_Deck_Cutting_Template/ deck_template_1to1.svg (print at 100 %, trace on 5 mm Sintra)
+                          deck_5mm_pvc.dxf (for a CNC shop; never laser-cut PVC)
+04_Software/              Raspberry Pi Zero 2 W code: run setup.sh on the Pi
+05_Renders/               pictures, assembly.glb (3D view) and the assembled model (viewing only)
+06_CAD_Source/            parametric Python CAD; python build.py regenerates everything
+
+Total to print: 127 parts, about 4.1 kg of filament. No supports needed. Fits a 220 x 220 mm bed.

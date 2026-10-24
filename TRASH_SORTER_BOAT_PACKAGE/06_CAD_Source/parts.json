@@ -1,0 +1,481 @@
+{
+ "parts": [
+  {
+   "part": "pontoon_bow_port",
+   "qty": 1,
+   "size": [
+    210.0,
+    115.0,
+    100.0
+   ],
+   "grams_each": 221.7,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "pontoon_bow_stbd",
+   "qty": 1,
+   "size": [
+    210.0,
+    115.0,
+    100.0
+   ],
+   "grams_each": 221.7,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "pontoon_mid",
+   "qty": 2,
+   "size": [
+    210.0,
+    115.0,
+    100.0
+   ],
+   "grams_each": 257.9,
+   "watertight": true,
+   "fits_bed": true,
+   "note": "one per side"
+  },
+  {
+   "part": "pontoon_stern_port",
+   "qty": 1,
+   "size": [
+    210.0,
+    115.0,
+    100.0
+   ],
+   "grams_each": 244.7,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "pontoon_stern_stbd",
+   "qty": 1,
+   "size": [
+    210.0,
+    115.0,
+    100.0
+   ],
+   "grams_each": 244.7,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "dowel",
+   "qty": 8,
+   "size": [
+    6.0,
+    6.0,
+    22.0
+   ],
+   "grams_each": 0.5,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "motor_saddle",
+   "qty": 4,
+   "size": [
+    26.0,
+    40.0,
+    22.0
+   ],
+   "grams_each": 6.6,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "paddle_wheel",
+   "qty": 4,
+   "size": [
+    176.0,
+    176.0,
+    34.0
+   ],
+   "grams_each": 102.8,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "belt_link",
+   "qty": 61,
+   "size": [
+    27.0,
+    10.0,
+    80.0
+   ],
+   "grams_each": 6.2,
+   "watertight": true,
+   "fits_bed": true,
+   "note": "print on edge"
+  },
+  {
+   "part": "belt_link_cleat",
+   "qty": 7,
+   "size": [
+    27.0,
+    30.0,
+    80.0
+   ],
+   "grams_each": 10.0,
+   "watertight": true,
+   "fits_bed": true,
+   "note": "print on edge"
+  },
+  {
+   "part": "drum_drive",
+   "qty": 2,
+   "size": [
+    53.6,
+    53.6,
+    81.0
+   ],
+   "grams_each": 47.7,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "drum_idler",
+   "qty": 2,
+   "size": [
+    53.6,
+    53.6,
+    81.0
+   ],
+   "grams_each": 48.2,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "c1_frame_lower",
+   "qty": 1,
+   "size": [
+    120.0,
+    96.0,
+    137.0
+   ],
+   "grams_each": 109.6,
+   "watertight": true,
+   "fits_bed": true,
+   "note": "splice end on the bed"
+  },
+  {
+   "part": "c1_frame_upper",
+   "qty": 1,
+   "size": [
+    90.0,
+    91.0,
+    137.0
+   ],
+   "grams_each": 106.3,
+   "watertight": true,
+   "fits_bed": true,
+   "note": "splice end on the bed"
+  },
+  {
+   "part": "c1_splice",
+   "qty": 2,
+   "size": [
+    46.0,
+    73.0,
+    3.0
+   ],
+   "grams_each": 8.2,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "c1_leg_port",
+   "qty": 1,
+   "size": [
+    47.4,
+    91.0,
+    14.0
+   ],
+   "grams_each": 8.6,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "c1_leg_stbd",
+   "qty": 1,
+   "size": [
+    47.4,
+    91.0,
+    14.0
+   ],
+   "grams_each": 8.6,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "c2_front_frame",
+   "qty": 1,
+   "size": [
+    116.0,
+    120.0,
+    119.5
+   ],
+   "grams_each": 117.2,
+   "watertight": true,
+   "fits_bed": true,
+   "note": "tail end on the bed"
+  },
+  {
+   "part": "c2_bed_beam",
+   "qty": 1,
+   "size": [
+    192.5,
+    84.0,
+    41.4
+   ],
+   "grams_each": 126.9,
+   "watertight": true,
+   "fits_bed": true,
+   "note": "bed face down"
+  },
+  {
+   "part": "c2_head_stand_drive",
+   "qty": 1,
+   "size": [
+    84.0,
+    65.4,
+    17.0
+   ],
+   "grams_each": 10.5,
+   "watertight": true,
+   "fits_bed": true,
+   "note": "port"
+  },
+  {
+   "part": "c2_head_stand_idler",
+   "qty": 1,
+   "size": [
+    84.0,
+    65.4,
+    17.0
+   ],
+   "grams_each": 10.5,
+   "watertight": true,
+   "fits_bed": true,
+   "note": "starboard"
+  },
+  {
+   "part": "sorter_frame_port",
+   "qty": 1,
+   "size": [
+    204.2,
+    120.0,
+    131.0
+   ],
+   "grams_each": 132.9,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "sorter_frame_stbd",
+   "qty": 1,
+   "size": [
+    204.2,
+    120.0,
+    131.0
+   ],
+   "grams_each": 132.9,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "sorter_cover_port",
+   "qty": 1,
+   "size": [
+    203.7,
+    108.0,
+    23.0
+   ],
+   "grams_each": 53.5,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "sorter_cover_stbd",
+   "qty": 1,
+   "size": [
+    203.7,
+    108.0,
+    23.0
+   ],
+   "grams_each": 53.5,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "servo_bridge",
+   "qty": 4,
+   "size": [
+    42.0,
+    25.0,
+    3.0
+   ],
+   "grams_each": 2.2,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "flap_port",
+   "qty": 2,
+   "size": [
+    98.3,
+    71.5,
+    6.0
+   ],
+   "grams_each": 8.9,
+   "watertight": true,
+   "fits_bed": true,
+   "note": "bins 1 + 3"
+  },
+  {
+   "part": "flap_stbd",
+   "qty": 2,
+   "size": [
+    98.3,
+    71.5,
+    6.0
+   ],
+   "grams_each": 8.9,
+   "watertight": true,
+   "fits_bed": true,
+   "note": "bins 2 + 4"
+  },
+  {
+   "part": "bucket",
+   "qty": 4,
+   "size": [
+    96.3,
+    110.0,
+    75.5
+   ],
+   "grams_each": 78.1,
+   "watertight": true,
+   "fits_bed": true,
+   "note": "handle faces outboard"
+  },
+  {
+   "part": "reject_tray",
+   "qty": 1,
+   "size": [
+    36.0,
+    81.0,
+    44.0
+   ],
+   "grams_each": 25.9,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "electronics_box",
+   "qty": 1,
+   "size": [
+    180.0,
+    86.0,
+    60.0
+   ],
+   "grams_each": 100.1,
+   "watertight": true,
+   "fits_bed": true,
+   "note": "port"
+  },
+  {
+   "part": "battery_box",
+   "qty": 1,
+   "size": [
+    180.0,
+    86.0,
+    60.0
+   ],
+   "grams_each": 97.5,
+   "watertight": true,
+   "fits_bed": true,
+   "note": "starboard"
+  },
+  {
+   "part": "box_lid",
+   "qty": 2,
+   "size": [
+    180.0,
+    86.0,
+    7.5
+   ],
+   "grams_each": 39.4,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "camera_mast",
+   "qty": 1,
+   "size": [
+    56.0,
+    109.6,
+    67.0
+   ],
+   "grams_each": 25.9,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  },
+  {
+   "part": "nav_cam_bracket",
+   "qty": 1,
+   "size": [
+    16.0,
+    40.0,
+    40.0
+   ],
+   "grams_each": 5.7,
+   "watertight": true,
+   "fits_bed": true,
+   "note": ""
+  }
+ ],
+ "filament_g": 4108,
+ "dry_mass_g": 6003,
+ "max_displacement_g": 13098,
+ "draft_mm_dry": 46.9,
+ "draft_mm_with 500 g trash": 50.7,
+ "bought_parts_g": {
+  "drive motors JGA25-370 x4": 380,
+  "conveyor motors JGA25-370 x2": 190,
+  "Raspberry Pi Zero 2 W + microSD": 15,
+  "Pi camera + USB webcam": 80,
+  "SG90 servos x4": 36,
+  "PCA9685": 10,
+  "L298N x2": 66,
+  "LM2596 buck converters x2": 30,
+  "3S1P 18650 pack + BMS": 160,
+  "wiring, switch, fuse, IR sensor": 130,
+  "M6 rod axles + nuts": 120,
+  "1.75 mm PETG filament pins (71)": 21,
+  "screws": 90,
+  "LED strip": 10,
+  "deck 5 mm PVC foam": 556
+ }
+}
