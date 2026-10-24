@@ -1,39 +1,44 @@
 folder,file,qty,size_mm,filament_g_total,settings,note
-1_Hull,01_pontoon_bow_port__x1.stl,1,210 x 115 x 100,222,"PLA/PETG, 3 walls, 5 top + 5 bottom, 5% gyroid, no supports",
-1_Hull,02_pontoon_bow_stbd__x1.stl,1,210 x 115 x 100,222,"PLA/PETG, 3 walls, 5 top + 5 bottom, 5% gyroid, no supports",
-1_Hull,03_pontoon_mid__x2.stl,2,210 x 115 x 100,516,"PLA/PETG, 3 walls, 5 top + 5 bottom, 5% gyroid, no supports",one per side
-1_Hull,04_pontoon_stern_port__x1.stl,1,210 x 115 x 100,245,"PLA/PETG, 3 walls, 5 top + 5 bottom, 5% gyroid, no supports",
-1_Hull,05_pontoon_stern_stbd__x1.stl,1,210 x 115 x 100,245,"PLA/PETG, 3 walls, 5 top + 5 bottom, 5% gyroid, no supports",
+1_Hull,01_pontoon_bow_port__x1.stl,1,190 x 115 x 100,199,"PLA/PETG, 3 walls, 5 top + 5 bottom, 5% gyroid, no supports",
+1_Hull,02_pontoon_bow_stbd__x1.stl,1,190 x 115 x 100,199,"PLA/PETG, 3 walls, 5 top + 5 bottom, 5% gyroid, no supports",
+1_Hull,03_pontoon_mid__x4.stl,4,190 x 115 x 100,942,"PLA/PETG, 3 walls, 5 top + 5 bottom, 5% gyroid, no supports",two per side
+1_Hull,04_pontoon_stern_port__x1.stl,1,190 x 115 x 100,222,"PLA/PETG, 3 walls, 5 top + 5 bottom, 5% gyroid, no supports",
+1_Hull,05_pontoon_stern_stbd__x1.stl,1,190 x 115 x 100,222,"PLA/PETG, 3 walls, 5 top + 5 bottom, 5% gyroid, no supports",
 1_Hull,06_dowel__x8.stl,8,6 x 6 x 22,4,"PLA/PETG, 3 walls, 5 top + 5 bottom, 5% gyroid, no supports",segment joints
 1_Hull,07_motor_saddle__x4.stl,4,26 x 40 x 22,26,"PLA/PETG, 3 walls, 5 top + 5 bottom, 5% gyroid, no supports",clamps the drive motors
 2_Drive_Wheels,01_paddle_wheel__x4.stl,4,176 x 176 x 34,411,"3 walls, 20% infill, flange down",
-3_Intake_Conveyor,01_c1_frame_lower__x1.stl,1,120 x 96 x 137,110,"2-3 walls, 15% infill; belt links on edge as exported",
-3_Intake_Conveyor,02_c1_frame_upper__x1.stl,1,90 x 91 x 137,106,"2-3 walls, 15% infill; belt links on edge as exported",
+3_Intake_Conveyor,01_c1_frame_lower__x1.stl,1,160 x 96 x 119,103,"2-3 walls, 15% infill; belt links on edge as exported",
+3_Intake_Conveyor,02_c1_frame_upper__x1.stl,1,130 x 91 x 137,131,"2-3 walls, 15% infill; belt links on edge as exported",
 3_Intake_Conveyor,03_c1_splice__x2.stl,2,46 x 73 x 3,16,"2-3 walls, 15% infill; belt links on edge as exported",
 3_Intake_Conveyor,04_c1_leg_port__x1.stl,1,47 x 91 x 14,9,"2-3 walls, 15% infill; belt links on edge as exported",
 3_Intake_Conveyor,05_c1_leg_stbd__x1.stl,1,47 x 91 x 14,9,"2-3 walls, 15% infill; belt links on edge as exported",
-3_Intake_Conveyor,06_drum_drive__x1.stl,1,54 x 54 x 81,48,"2-3 walls, 15% infill; belt links on edge as exported",top drum
-3_Intake_Conveyor,07_drum_idler__x1.stl,1,54 x 54 x 81,48,"2-3 walls, 15% infill; belt links on edge as exported",bottom drum
-3_Intake_Conveyor,08_belt_link__x22.stl,22,27 x 10 x 80,136,"2-3 walls, 15% infill; belt links on edge as exported",
-3_Intake_Conveyor,09_belt_link_cleat__x7.stl,7,27 x 30 x 80,70,"2-3 walls, 15% infill; belt links on edge as exported",every 4th link
-4_Sorting_Conveyor,01_c2_front_frame__x1.stl,1,116 x 120 x 120,117,"2-3 walls, 15% infill; belt links on edge as exported",camera zone + chute
-4_Sorting_Conveyor,02_c2_bed_beam__x1.stl,1,192 x 84 x 41,127,"2-3 walls, 15% infill; belt links on edge as exported",
-4_Sorting_Conveyor,03_c2_head_stand_drive__x1.stl,1,84 x 65 x 17,10,"2-3 walls, 15% infill; belt links on edge as exported",port
-4_Sorting_Conveyor,04_c2_head_stand_idler__x1.stl,1,84 x 65 x 17,10,"2-3 walls, 15% infill; belt links on edge as exported",starboard
-4_Sorting_Conveyor,05_drum_drive__x1.stl,1,54 x 54 x 81,48,"2-3 walls, 15% infill; belt links on edge as exported",stern drum
-4_Sorting_Conveyor,06_drum_idler__x1.stl,1,54 x 54 x 81,48,"2-3 walls, 15% infill; belt links on edge as exported",front drum
-4_Sorting_Conveyor,07_belt_link__x39.stl,39,27 x 10 x 80,242,"2-3 walls, 15% infill; belt links on edge as exported",
-4_Sorting_Conveyor,08_reject_tray__x1.stl,1,36 x 81 x 44,26,"2-3 walls, 15% infill; belt links on edge as exported",
-5_Sorter_Bins,01_sorter_frame_port__x1.stl,1,204 x 120 x 131,133,"2-3 walls, 15% infill",bins 1 + 3
-5_Sorter_Bins,02_sorter_frame_stbd__x1.stl,1,204 x 120 x 131,133,"2-3 walls, 15% infill",bins 2 + 4
-5_Sorter_Bins,03_sorter_cover_port__x1.stl,1,204 x 108 x 23,54,"2-3 walls, 15% infill",
-5_Sorter_Bins,04_sorter_cover_stbd__x1.stl,1,204 x 108 x 23,54,"2-3 walls, 15% infill",
-5_Sorter_Bins,05_servo_bridge__x4.stl,4,42 x 25 x 3,9,"2-3 walls, 15% infill",
-5_Sorter_Bins,06_flap_port__x2.stl,2,98 x 72 x 6,18,"2-3 walls, 15% infill",bins 1 + 3
-5_Sorter_Bins,07_flap_stbd__x2.stl,2,98 x 72 x 6,18,"2-3 walls, 15% infill",bins 2 + 4
-5_Sorter_Bins,08_bucket__x4.stl,4,96 x 110 x 76,312,"2-3 walls, 15% infill",
-6_Electronics_Mounts,01_electronics_box__x1.stl,1,180 x 86 x 60,100,"2-3 walls, 15% infill",port bow deck
-6_Electronics_Mounts,02_battery_box__x1.stl,1,180 x 86 x 60,98,"2-3 walls, 15% infill",starboard bow deck
-6_Electronics_Mounts,03_box_lid__x2.stl,2,180 x 86 x 8,79,"2-3 walls, 15% infill",
-6_Electronics_Mounts,04_camera_mast__x1.stl,1,56 x 110 x 67,26,"2-3 walls, 15% infill",sorting camera + LEDs
+3_Intake_Conveyor,06_drum_drive__x1.stl,1,54 x 54 x 121,70,"2-3 walls, 15% infill; belt links on edge as exported",top drum
+3_Intake_Conveyor,07_drum_idler__x1.stl,1,54 x 54 x 121,71,"2-3 walls, 15% infill; belt links on edge as exported",bottom drum
+3_Intake_Conveyor,08_belt_link__x22.stl,22,27 x 10 x 120,165,"2-3 walls, 15% infill; belt links on edge as exported",
+3_Intake_Conveyor,09_belt_link_cleat__x7.stl,7,27 x 30 x 120,92,"2-3 walls, 15% infill; belt links on edge as exported",every 4th link
+4_Sorting_Conveyor,01_c2_front_frame__x1.stl,1,156 x 120 x 148,182,"2-3 walls, 15% infill; belt links on edge as exported",camera zone + chute
+4_Sorting_Conveyor,02_c2_bed_beam_front__x1.stl,1,152 x 124 x 41,156,"2-3 walls, 15% infill; belt links on edge as exported",
+4_Sorting_Conveyor,03_c2_bed_beam_rear__x1.stl,1,142 x 124 x 41,146,"2-3 walls, 15% infill; belt links on edge as exported",
+4_Sorting_Conveyor,04_c2_head_stand_drive__x1.stl,1,84 x 65 x 17,10,"2-3 walls, 15% infill; belt links on edge as exported",port
+4_Sorting_Conveyor,05_c2_head_stand_idler__x1.stl,1,84 x 65 x 17,10,"2-3 walls, 15% infill; belt links on edge as exported",starboard
+4_Sorting_Conveyor,06_drum_drive__x1.stl,1,54 x 54 x 121,70,"2-3 walls, 15% infill; belt links on edge as exported",stern drum
+4_Sorting_Conveyor,07_drum_idler__x1.stl,1,54 x 54 x 121,71,"2-3 walls, 15% infill; belt links on edge as exported",front drum
+4_Sorting_Conveyor,08_belt_link__x52.stl,52,27 x 10 x 120,390,"2-3 walls, 15% infill; belt links on edge as exported",
+4_Sorting_Conveyor,09_reject_tray__x1.stl,1,36 x 121 x 44,36,"2-3 walls, 15% infill; belt links on edge as exported",
+5_Sorter_Bins,01_sorter_frame_front_port__x1.stl,1,151 x 128 x 131,105,"2-3 walls, 15% infill",bin 1
+5_Sorter_Bins,02_sorter_frame_front_stbd__x1.stl,1,151 x 128 x 131,105,"2-3 walls, 15% infill",bin 2
+5_Sorter_Bins,03_sorter_frame_rear_port__x1.stl,1,150 x 128 x 131,97,"2-3 walls, 15% infill",bin 3
+5_Sorter_Bins,04_sorter_frame_rear_stbd__x1.stl,1,150 x 128 x 131,97,"2-3 walls, 15% infill",bin 4
+5_Sorter_Bins,05_sorter_cover_front_port__x1.stl,1,151 x 116 x 23,42,"2-3 walls, 15% infill",bin 1
+5_Sorter_Bins,06_sorter_cover_front_stbd__x1.stl,1,151 x 116 x 23,42,"2-3 walls, 15% infill",bin 2
+5_Sorter_Bins,07_sorter_cover_rear_port__x1.stl,1,149 x 116 x 23,41,"2-3 walls, 15% infill",bin 3
+5_Sorter_Bins,08_sorter_cover_rear_stbd__x1.stl,1,149 x 116 x 23,41,"2-3 walls, 15% infill",bin 4
+5_Sorter_Bins,09_servo_bridge__x4.stl,4,42 x 25 x 3,9,"2-3 walls, 15% infill",
+5_Sorter_Bins,10_flap_port__x2.stl,2,144 x 72 x 6,25,"2-3 walls, 15% infill",bins 1 + 3
+5_Sorter_Bins,11_flap_stbd__x2.stl,2,144 x 72 x 6,25,"2-3 walls, 15% infill",bins 2 + 4
+5_Sorter_Bins,12_bucket__x4.stl,4,141 x 118 x 76,420,"2-3 walls, 15% infill",
+6_Electronics_Mounts,01_electronics_box__x1.stl,1,180 x 107 x 60,113,"2-3 walls, 15% infill",port bow deck
+6_Electronics_Mounts,02_battery_box__x1.stl,1,180 x 107 x 60,111,"2-3 walls, 15% infill",starboard bow deck
+6_Electronics_Mounts,03_box_lid__x2.stl,2,180 x 107 x 8,96,"2-3 walls, 15% infill",
+6_Electronics_Mounts,04_camera_mast__x1.stl,1,56 x 110 x 87,28,"2-3 walls, 15% infill",sorting camera + LEDs
 6_Electronics_Mounts,05_nav_cam_bracket__x1.stl,1,16 x 40 x 40,6,"2-3 walls, 15% infill",front webcam

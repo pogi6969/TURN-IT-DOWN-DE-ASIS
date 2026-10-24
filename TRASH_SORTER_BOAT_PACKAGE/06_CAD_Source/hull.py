@@ -20,7 +20,7 @@ def _rounded_rect_pts(x0, x1, y0, y1, z, r, n=12):
 
 
 def _segment_body(kind):
-    x0, x1 = {"stern": SEG_X[0], "mid": SEG_X[1], "bow": SEG_X[2]}[kind]
+    x0, x1 = {"stern": SEG_X[0], "mid": SEG_X[1], "bow": SEG_X[-1]}[kind]
     y0, y1 = P_IN, P_OUT
     if kind == "mid":
         return box(x0, x1, y0, y1, 0, P_H)
@@ -50,7 +50,7 @@ def _motor_pocket(ax):
 def pontoon_segment(kind):
     """Port-side segment (y > 0). Mirror for starboard. Printed solid with low
     infill so each segment is its own sealed buoyancy chamber."""
-    x0, x1 = {"stern": SEG_X[0], "mid": SEG_X[1], "bow": SEG_X[2]}[kind]
+    x0, x1 = {"stern": SEG_X[0], "mid": SEG_X[1], "bow": SEG_X[-1]}[kind]
     m = _segment_body(kind)
     # alignment dowel holes on joint faces
     faces = {"stern": [x1], "mid": [x0, x1], "bow": [x0]}[kind]

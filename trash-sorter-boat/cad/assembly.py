@@ -57,11 +57,12 @@ def parts(open_flap=True):
     """List of (name, manifold, colour key, printed?)."""
     P = []
     add = lambda n, m, c, pr=True: P.append((n, m, c, pr))
-    for k in ("stern", "mid", "bow"):
-        seg = hull.pontoon_segment(k)
-        add(f"pontoon_{k}_port", seg, "hull")
-        add(f"pontoon_{k}_stbd", mirror_y(seg), "hull")
-    deck = box(-315, 315, -P_OUT, P_OUT, P_H, DECK_Z) - box(C1_OPEN_X, 400, -P_IN, P_IN, P_H - 1, DECK_Z + 1)
+    for i, (x0, x1) in enumerate(SEG_X):
+        k = "stern" if i == 0 else "bow" if i == len(SEG_X) - 1 else "mid"
+        seg = hull.pontoon_segment(k).translate([x0 - SEG_X[1][0] if k == "mid" else 0, 0, 0])
+        add(f"pontoon_{i}_{k}_port", seg, "hull")
+        add(f"pontoon_{i}_{k}_stbd", mirror_y(seg), "hull")
+    deck = box(-BOAT_L / 2, BOAT_L / 2, -P_OUT, P_OUT, P_H, DECK_Z) - box(C1_OPEN_X, BOAT_L, -P_IN, P_IN, P_H - 1, DECK_Z + 1)
     add("deck (5 mm PVC foam)", deck, "deck", False)
     for ax in (AXLE_X, -AXLE_X):
         sad = hull.motor_saddle().translate([ax, (POCKET_Y0 + P_OUT - 3) / 2, SHAFT_Z])
@@ -88,7 +89,8 @@ def parts(open_flap=True):
     add("c1_belt", _links("c1", C1_C, LINKS_C1, CLEAT_EVERY), "belt")
     # sorting conveyor C2
     add("c2_front", _conv(fr.c2_front(), "c2"), "frame")
-    add("c2_beam", _conv(fr.c2_beam(), "c2"), "frame")
+    for i in (0, 1):
+        add(f"c2_beam_{i}", _conv(fr.c2_beam_piece(i), "c2"), "frame")
     add("c2_head_stand_port", _conv(fr.c2_head_stand(True), "c2"), "frame")
     add("c2_head_stand_stbd", mirror_y(_conv(fr.c2_head_stand(False), "c2")), "frame")
     add("c2_drum_tail", _drum(False, 0, "c2"), "drum")
@@ -98,10 +100,11 @@ def parts(open_flap=True):
     add("c2_belt", _links("c2", C2_C, LINKS_C2), "belt")
     add("reject_tray", so.reject_tray(), "sorter")
     # sorter
-    for s, m in zip(("port", "stbd"), both(so.sorter_frame())):
-        add(f"sorter_frame_{s}", m, "sorter")
-    for s, m in zip(("port", "stbd"), both(so.sorter_cover())):
-        add(f"sorter_cover_{s}", m, "sorter")
+    for i, bay in ((0, "front"), (1, "rear")):
+        for s, m in zip(("port", "stbd"), both(so.piece(so.sorter_frame(), i))):
+            add(f"sorter_frame_{bay}_{s}", m, "sorter")
+        for s, m in zip(("port", "stbd"), both(so.piece(so.sorter_cover(), i))):
+            add(f"sorter_cover_{bay}_{s}", m, "sorter")
     bins = {"port": (1, 3), "stbd": (2, 4)}
     for side in ("port", "stbd"):
         for (xh, (bx0, bx1), nbin) in zip(so.HINGES, so.BAYS, bins[side]):
@@ -121,6 +124,6 @@ def parts(open_flap=True):
     add("camera_mast", el.camera_mast(), "frame")
     add("nav_cam_bracket", el.nav_cam_bracket(), "frame")
     z = DECK_Z + el.BOX_H + 2.5
-    add("nav_camera", box(el.BOX_X[1] - 3, el.BOX_X[1] + 22, 80, 130, z + 12, z + 42), "buy", False)
+    add("nav_camera", box(el.BOX_X[1] - 3, el.BOX_X[1] + 22, el.BOX_YC - 25, el.BOX_YC + 25, z + 12, z + 42), "buy", False)
     add("sort_camera", box(el.CAM_X - 12.5, el.CAM_X + 12.5, -12, 12, el.CAM_Z - 6, el.CAM_Z), "buy", False)
     return P

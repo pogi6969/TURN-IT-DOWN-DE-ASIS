@@ -26,7 +26,7 @@ SERVO_CHANNELS = {1: 0, 2: 1, 3: 2, 4: 3}      # bin number -> PCA9685 channel
 SERVO_CLOSED = {1: 90, 2: 90, 3: 90, 4: 90}    # degrees, trim after assembly
 SERVO_OPEN = {1: 150, 2: 30, 3: 150, 4: 30}    # SG90 servos; port flaps swing one way, starboard the other (60 deg)
 # seconds of C2 travel needed after the flap opens, measured from the camera stop
-TRAVEL_S = {1: 3.5, 2: 3.5, 3: 5.5, 4: 5.5}
+TRAVEL_S = {1: 4.0, 2: 4.0, 3: 6.5, 4: 6.5}       # 440 mm sorting belt, 120 mm wide
 
 # --- classifier (Google Teachable Machine -> Export -> TensorFlow Lite) ----
 MODEL_PATH = "model/model_unquant.tflite"      # or model.tflite (quantized)

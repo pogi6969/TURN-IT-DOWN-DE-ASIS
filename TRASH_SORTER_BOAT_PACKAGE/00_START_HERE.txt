@@ -10,4 +10,4 @@ TRASH-SORTING AMPHIBIOUS BOAT - PACKAGE
 05_Renders/               pictures, assembly.glb (3D view) and the assembled model (viewing only)
 06_CAD_Source/            parametric Python CAD; python build.py regenerates everything
 
-Total to print: 127 parts, about 4.1 kg of filament. No supports needed. Fits a 220 x 220 mm bed.
+Total to print: 147 parts, about 5.4 kg of filament. No supports needed. Fits a 220 x 220 mm bed.

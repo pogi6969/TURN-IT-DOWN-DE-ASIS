@@ -38,7 +38,7 @@ def holes():
                     h.append((hx, s * (P_CY + dy), 1.6))          # 3.2 mm clearance for M3 / #4 screws
     for s in (-1, 1):                                              # drive-motor wire holes over the pockets
         h.append((AXLE_X, s * (POCKET_Y0 + 8), 5.0))               # bow: inside the electronics/battery boxes
-        h.append((-AXLE_X, s * (SORTER_OUT + 12), 5.0))            # stern: outboard of the sorter frames
+        h.append((-AXLE_X, s * (SORTER_OUT + 8), 5.0))            # stern: outboard of the sorter frames
     return h
 
 

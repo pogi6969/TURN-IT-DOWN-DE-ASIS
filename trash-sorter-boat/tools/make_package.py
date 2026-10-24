@@ -25,7 +25,7 @@ INFO = {p["part"]: p for p in PARTS["parts"]}
 
 # folder -> [(stl name, qty in this folder, note)]
 GROUPS = {
-    "1_Hull": [("pontoon_bow_port", 1, ""), ("pontoon_bow_stbd", 1, ""), ("pontoon_mid", 2, "one per side"),
+    "1_Hull": [("pontoon_bow_port", 1, ""), ("pontoon_bow_stbd", 1, ""), ("pontoon_mid", 4, "two per side"),
                ("pontoon_stern_port", 1, ""), ("pontoon_stern_stbd", 1, ""), ("dowel", 8, "segment joints"),
                ("motor_saddle", 4, "clamps the drive motors")],
     "2_Drive_Wheels": [("paddle_wheel", 4, "")],
@@ -33,12 +33,14 @@ GROUPS = {
                           ("c1_leg_port", 1, ""), ("c1_leg_stbd", 1, ""), ("drum_drive", 1, "top drum"),
                           ("drum_idler", 1, "bottom drum"), ("belt_link", C.LINKS_C1 - C.LINKS_C1 // C.CLEAT_EVERY, ""),
                           ("belt_link_cleat", C.LINKS_C1 // C.CLEAT_EVERY, "every 4th link")],
-    "4_Sorting_Conveyor": [("c2_front_frame", 1, "camera zone + chute"), ("c2_bed_beam", 1, ""),
+    "4_Sorting_Conveyor": [("c2_front_frame", 1, "camera zone + chute"), ("c2_bed_beam_front", 1, ""), ("c2_bed_beam_rear", 1, ""),
                            ("c2_head_stand_drive", 1, "port"), ("c2_head_stand_idler", 1, "starboard"),
                            ("drum_drive", 1, "stern drum"), ("drum_idler", 1, "front drum"),
                            ("belt_link", C.LINKS_C2, ""), ("reject_tray", 1, "")],
-    "5_Sorter_Bins": [("sorter_frame_port", 1, "bins 1 + 3"), ("sorter_frame_stbd", 1, "bins 2 + 4"),
-                      ("sorter_cover_port", 1, ""), ("sorter_cover_stbd", 1, ""), ("servo_bridge", 4, ""),
+    "5_Sorter_Bins": [("sorter_frame_front_port", 1, "bin 1"), ("sorter_frame_front_stbd", 1, "bin 2"),
+                      ("sorter_frame_rear_port", 1, "bin 3"), ("sorter_frame_rear_stbd", 1, "bin 4"),
+                      ("sorter_cover_front_port", 1, "bin 1"), ("sorter_cover_front_stbd", 1, "bin 2"),
+                      ("sorter_cover_rear_port", 1, "bin 3"), ("sorter_cover_rear_stbd", 1, "bin 4"), ("servo_bridge", 4, ""),
                       ("flap_port", 2, "bins 1 + 3"), ("flap_stbd", 2, "bins 2 + 4"), ("bucket", 4, "")],
     "6_Electronics_Mounts": [("electronics_box", 1, "port bow deck"), ("battery_box", 1, "starboard bow deck"),
                              ("box_lid", 2, ""), ("camera_mast", 1, "sorting camera + LEDs"),
@@ -86,7 +88,7 @@ def report_markdown(rows):
     md = re.sub(r"!\[[^\]]*\]\([^)]*\)\n?", "", md)                          # images are placed by hand below
     d = PARTS
     links = C.LINKS_C1 + C.LINKS_C2
-    lwl, b, yc = 600.0, C.P_W, C.P_CY
+    lwl, b, yc = C.BOAT_L - 30.0, C.P_W, C.P_CY
     I = 2 * (lwl * b ** 3 / 12 + lwl * b * yc ** 2)
     V = d["dry_mass_g"] * 1000.0
     BM, KB, KG = I / V, d["draft_mm_dry"] / 2, 140.0
@@ -101,7 +103,7 @@ def report_markdown(rows):
     sec = {}
     sec["summary"] = f"""This report describes an affordable, 3D-printed amphibious boat. A conveyor at the bow collects floating trash. A camera on a second conveyor identifies each item, and a servo-driven door sorts it into one of 4 bins. It drives on land and in water on 4 paddle wheels, and it is steered from a phone with a live navigation camera.
 
-The design was modelled parametrically and checked in software: no parts overlap, every part fits a 220 × 220 mm printer bed, and the buoyancy was computed from the hull shape. Estimated materials cost is **≈ ₱12,960**, and **{d['filament_g'] / 1000:.1f} kg** of filament prints **{sum(r[2] for r in rows)} parts**."""
+The design was modelled parametrically and checked in software: no parts overlap, every part fits a 220 × 220 mm printer bed, and the buoyancy was computed from the hull shape. Estimated materials cost is **≈ ₱13,710**, and **{d['filament_g'] / 1000:.1f} kg** of filament prints **{sum(r[2] for r in rows)} parts**."""
     sec["calc"] = f"""### Buoyancy and draft
 The boat sinks until the water it pushes aside weighs as much as the boat (m = ρ·V). The waterline was found from the CAD pontoon volume by bisection.
 
@@ -160,7 +162,7 @@ That totals about **1.9 A** average. A 3S1P pack of 2.5 Ah cells gives **about 1
 | Cost efficiency | 10% |
 | Documentation | 20% |"""
     sec["verify"] = f"""**Checked in software:**
-- Interference check of all 66 assembly parts: 0 overlaps, with a door open and with all doors closed.
+- Interference check of all 73 assembly parts: 0 overlaps, with a door open and with all doors closed.
 - All {len(d['parts'])} STL files are watertight meshes and fit a 220 × 220 × 250 mm bed.
 - The sorting logic passes its unit tests, and the phone dashboard runs in mock mode.
 

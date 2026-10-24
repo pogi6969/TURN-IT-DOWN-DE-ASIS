@@ -19,9 +19,11 @@ C2_BEAM_X = (SORTER_X[1] + 1.5, C2_HEAD_X + 30.0)
 
 def body(u0, u1):
     """Slider bed inside the belt loop (I-beam) + side strips to the walls."""
-    parts = [box(u0, u1, -38, 38, 19.4, 22.4),             # bed surface under the top-run knuckles
-             box(u0, u1, -30, 30, -19, -16),               # bottom flange
-             box(u0, u1, -21, -18, -19, 22.4), box(u0, u1, 18, 21, -19, 22.4)]
+    h = BELT_W / 2 - 2
+    parts = [box(u0, u1, -h, h, 19.4, 22.4),               # bed surface under the top-run knuckles
+             box(u0, u1, -h + 8, h - 8, -19, -16)]         # bottom flange
+    for y in (18.0, h - 12):                               # webs
+        parts += [box(u0, u1, -y - 3, -y, -19, 22.4), box(u0, u1, y, y + 3, -19, 22.4)]
     for s in (-1, 1):                                       # thin strips to the walls + ribs
         y0, y1 = min(s * 20, s * 41.01), max(s * 20, s * 41.01)
         parts.append(box(u0, u1, y0, y1, -1.5, 1.5))
@@ -65,7 +67,7 @@ def c1_lower():
     m = walls(-32, SPLICE_U, W_BOT, W_TOP) + body(35, SPLICE_U)
     for (u, w) in C1_BOSSES_UW:                    # stand-offs to the pontoon inner walls
         for s in (-1, 1):
-            m = m + cyl_y(7.0, min(s * 44, s * P_IN), max(s * 44, s * P_IN), u, w, 32)
+            m = m + cyl_y(7.0, min(s * (FRAME_IN + FRAME_T - 1), s * P_IN), max(s * (FRAME_IN + FRAME_T - 1), s * P_IN), u, w, 32)
     m = m - axle_hole(0) - _holes([p for p in SPLICE_HOLES if p[0] < SPLICE_U])
     for (u, w) in C1_BOSSES_UW:
         m = m - cyl_y(1.7, -P_IN - 1, P_IN + 1, u, w, 16)
@@ -118,7 +120,7 @@ def c2_front():
     m = walls(u0, u1, w_deck, w_top) + body(35, u1)
     for s in (-1, 1):                                                 # deck feet (outboard)
         for uf in (u0 + 2, u1 - 16):
-            y0, y1 = sorted((s * (FRAME_IN + FRAME_T), s * 58))
+            y0, y1 = sorted((s * (FRAME_IN + FRAME_T), s * (FRAME_IN + FRAME_T + 13)))
             m = m + box(uf, uf + 14, y0, y1, w_deck, w_deck + 4)
     # transfer chute between the walls, from just outside the intake head's cleat circle down onto the belt
     def uw(x, z):
@@ -130,7 +132,7 @@ def c2_front():
     m = m - axle_hole(0)
     for s in (-1, 1):
         for uf in (u0 + 2, u1 - 16):
-            m = m - cyl_z(1.7, w_deck - 1, w_deck + 5, uf + 7, s * 52, 16)
+            m = m - cyl_z(1.7, w_deck - 1, w_deck + 5, uf + 7, s * (FRAME_IN + FRAME_T + 7), 16)
     ir_u = C2_TAIL_X - (CAM_ZONE[1] + 14.0)                         # IR sensor window, starboard wall
     m = m - box(ir_u - 6, ir_u + 6, -FRAME_IN - FRAME_T - 1, -FRAME_IN + 1, 36, 44)
     m = m - cyl_y(1.7, -FRAME_IN - FRAME_T - 1, -FRAME_IN + 1, ir_u - 12, 40, 16)
@@ -143,7 +145,7 @@ def c2_front():
 def c2_beam():
     """Slider bed for the sorting run; ears bolt to the sorter-frame inner walls."""
     u0, u1 = C2_TAIL_X - C2_BEAM_X[0], C2_TAIL_X - C2_BEAM_X[1]
-    m = body(u0, u1) ^ box(u0, u1, -38, 38, -30, 30)                 # strips stop at the bed width
+    m = body(u0, u1) ^ box(u0, u1, -BELT_W / 2 + 2, BELT_W / 2 - 2, -30, 30)   # strips stop at the bed width
     for xe in C2_EAR_X:
         ue = C2_TAIL_X - xe
         m = m + box(ue - 6, ue + 6, -WALL_Y, WALL_Y, -8, 8)
@@ -151,17 +153,23 @@ def c2_beam():
     return m
 
 
+def c2_beam_piece(i):
+    """The bed beam is printed in two pieces, split where the sorter frames split."""
+    us = C2_TAIL_X - SORTER_SPLIT
+    return c2_beam() ^ (box(-100, us, -100, 100, -100, 100) if i == 0 else box(us, 1000, -100, 100, -100, 100))
+
+
 def c2_head_stand(drive=False):
     """Plate beside the head drum (port = drive). Built at +v; mirror for starboard."""
     ua, ub = C2_C - 16.0, C2_C + 28.0
     w_deck = DECK_Z - C2_AXIS_Z
     m = box(ua, ub, FRAME_IN, FRAME_IN + FRAME_T, w_deck, 18)
-    m = m + box(ua, ub, FRAME_IN + FRAME_T - 0.01, 58, w_deck, w_deck + 4)
+    m = m + box(ua, ub, FRAME_IN + FRAME_T - 0.01, FRAME_IN + FRAME_T + 13, w_deck, w_deck + 4)
     m = m + box(ub - 0.01, ub + 40, FRAME_IN, FRAME_IN + FRAME_T, -12, -2)    # arm for the reject tray
     m = m - axle_hole(C2_C)
     if drive:
         m = m - motor_face(C2_C, +1)
     for du in (-10, 22):
-        m = m - cyl_z(1.7, w_deck - 1, w_deck + 5, C2_C + du, 52, 16)
+        m = m - cyl_z(1.7, w_deck - 1, w_deck + 5, C2_C + du, FRAME_IN + FRAME_T + 7, 16)
     m = m - cyl_y(1.7, FRAME_IN - 1, FRAME_IN + FRAME_T + 1, ub + 32, -7, 16)
     return m

@@ -11,23 +11,23 @@ import numpy as np
 from manifold3d import Manifold, CrossSection
 
 # ------------------------------------------------------------------ hull
-BOAT_L = 630.0            # 3 pontoon segments x 210
-SEG_L = 210.0
-SEG_X = [(-315.0, -105.0), (-105.0, 105.0), (105.0, 315.0)]  # stern, mid, bow
+BOAT_L = 760.0            # 4 pontoon segments x 190
+SEG_L = 190.0
+SEG_X = [(-BOAT_L / 2 + i * SEG_L, -BOAT_L / 2 + (i + 1) * SEG_L) for i in range(4)]  # stern, mid, mid, bow
 P_W = 115.0               # pontoon width
 P_H = 100.0               # pontoon height
-P_IN = 60.0               # |y| of pontoon inner face (gap = 120)
+P_IN = 80.0               # |y| of pontoon inner face (gap = 160 for the 120 mm intake)
 P_OUT = P_IN + P_W        # 175, |y| of outer face
-SORTER_OUT = 150.0        # |y| of the sorter bays' open outer side
+SORTER_OUT = 178.0        # |y| of the sorter bays' open outer side
 POCKET_Y0 = P_OUT - 73.0  # inboard end of the drive-motor pockets
 P_CY = P_IN + P_W / 2     # 117.5
 DECK_T = 5.0              # 5 mm PVC foam (Sintra) deck
 DECK_Z = P_H + DECK_T     # 105, deck top
 BOW_RAKE = 70.0           # bottom of bow ends 70 mm behind the bow tip
-C1_OPEN_X = 162.0         # deck is open between pontoons for x > this
+C1_OPEN_X = BOAT_L / 2 - 153.0   # deck is open between pontoons for x > this
 
 # ------------------------------------------------------------------ drive
-AXLE_X = 225.0            # wheel axles at x = +/-225
+AXLE_X = BOAT_L / 2 - 95.0       # wheel axles
 SHAFT_Z = 78.0            # drive motor shaft height
 WHEEL_R = 88.0            # paddle tip radius (ground at z = -10)
 WHEEL_RIM = 70.0
@@ -39,7 +39,7 @@ MOTOR_LEN = 66.0          # gearbox face to back of terminals (max)
 MOTOR_HOLE_DX = 8.5       # gearbox face M3 holes at +/-8.5 mm (slotted 7.5-9.5)
 
 # ------------------------------------------------------------------ belt
-BELT_W = 80.0
+BELT_W = 120.0
 PITCH = 20.0
 TEETH = 8
 R_PIN = PITCH / (2 * math.sin(math.pi / TEETH))   # 26.13 pin circle radius
@@ -48,17 +48,17 @@ PLATE_IN, PLATE_OUT = 3.5, 6.5                    # plate between these heights 
 SURF_R = R_PIN + PLATE_OUT                        # 32.6, carrying surface over drum axis
 CLEAT_H = 20.0
 PIN_HOLE = 2.2            # 2.0 mm bicycle-spoke or 1.75 mm filament pins
-DRUM_W = 78.0
-FRAME_IN = 41.0           # |v| of conveyor side-wall inner face
+DRUM_W = BELT_W - 2.0
+FRAME_IN = BELT_W / 2 + 1.0       # |v| of conveyor side-wall inner face
 FRAME_T = 4.0
 
 # ------------------------------------------------------------------ conveyors
 C1_ALPHA = math.radians(50.0)
-C1_TAIL = (255.0, 50.0)   # (x, z) of the intake tail drum axis (cleat tips clear the ground on land)
+C1_TAIL = (BOAT_L / 2 - 60.0, 50.0)   # (x, z) of the intake tail drum axis (cleat tips clear the ground on land)
 C1_C = 210.0              # drum centre distance -> 2*210/20 + 8 = 29 links
 C2_Z_SURF = 185.0         # sorting belt surface height
 C2_AXIS_Z = C2_Z_SURF - SURF_R
-C2_C = 310.0              # 2*310/20 + 8 = 39 links
+C2_C = 440.0              # 2*440/20 + 8 = 52 links
 
 
 def c1_point(u, w):
@@ -73,16 +73,17 @@ C2_HEAD_X = C2_TAIL_X - C2_C                      # -284.3
 
 # ------------------------------------------------------------------ sorter
 FLAP_ANGLE = math.radians(60.0)
-HINGE_Y = 45.0            # |y| of flap hinge (post) axis; the closed flap sits in the wall at 42-44.5
-FLAP_REACH = HINGE_Y + 38.0                       # tip stops 2 mm short of far belt edge
+WALL_Y = BELT_W / 2 + 2.0          # |y| of sorter-frame inner wall
+HINGE_Y = WALL_Y + 3.0    # |y| of flap hinge (post) axis; the closed flap sits in the wall
+FLAP_REACH = HINGE_Y + BELT_W / 2 - 2.0           # tip stops 2 mm short of far belt edge
 FLAP_L = FLAP_REACH / math.sin(FLAP_ANGLE)        # 93.8
 FLAP_H = 35.0
-CAM_ZONE = (C2_TAIL_X - 20.0, C2_TAIL_X - 92.0)   # landing / camera zone x range
+CAM_ZONE = (C2_TAIL_X - 20.0, C2_TAIL_X - 120.0)  # landing / camera zone x range
 STATION_A = CAM_ZONE[1] - FLAP_L                  # hinge x of bins 1 (port) + 2 (stbd)
-STATION_B = STATION_A - FLAP_L - 6.0              # hinge x of bins 3 (port) + 4 (stbd)
+STATION_B = STATION_A - FLAP_L - 10.0             # hinge x of bins 3 (port) + 4 (stbd)
 SORTER_X = (STATION_B - 3.0, CAM_ZONE[1] + 3.0)   # sorter frame x extent
-WALL_Y = 42.0             # |y| of sorter-frame inner wall
-C2_EAR_X = (SORTER_X[1] - 45.0, STATION_A - 3.0, SORTER_X[0] + 25.0)  # C2 bed-beam ear bolts
+SORTER_SPLIT = STATION_B + FLAP_L + 4.0           # sorter frames/covers/bed beam split here (one piece per bay)
+C2_EAR_X = (SORTER_X[1] - 45.0, SORTER_SPLIT + 12.0, SORTER_SPLIT - 12.0, SORTER_X[0] + 25.0)  # C2 bed-beam ear bolts
 COVER_Z = 236.0           # underside of sorter cover
 MOUTH_Z = 183.0           # bottom lip of the bin mouths (belt surface 185)
 SERVO_BRIDGE_Z = 262.0    # top of the servo bridge plates

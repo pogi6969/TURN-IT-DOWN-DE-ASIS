@@ -31,17 +31,17 @@ Check the size, weight and power limits against the official OCNR sheet.
 
 | Item | Value |
 |---|---|
-| Hull | Catamaran, 2 pontoons of 630 × 115 × 100 mm, each printed as 3 sealed segments |
-| Overall size | 650 L × 424 W × 315 H mm (on land) |
-| Dry mass | ≈ 6.0 kg (≈ 4.1 kg printed parts, 1.9 kg bought parts) |
-| Buoyancy | 13.1 kg to the deck, about 2× the boat's weight |
-| Draft (how deep it sits) | 47 mm dry, 51 mm with 500 g of trash. The drive motors sit at 65 mm, so they stay 14 mm above the water |
-| Stability | Metacentric height ≈ 225 mm (very stable, because the pontoons are far apart) |
+| Hull | Catamaran, 2 pontoons of 760 × 115 × 100 mm, each printed as 4 sealed segments |
+| Overall size | 780 L × 464 W × 315 H mm (on land) |
+| Dry mass | ≈ 7.5 kg (≈ 5.4 kg printed parts, 2.1 kg bought parts) |
+| Buoyancy | 16.1 kg to the deck, about 2× the boat's weight |
+| Draft (how deep it sits) | 47 mm dry, 50 mm with 500 g of trash. The drive motors sit at 65 mm, so they stay 15 mm above the water |
+| Stability | Metacentric height ≈ 330 mm (very stable, because the pontoons are far apart) |
 | Drive | 4 × JGA25-370 12 V 60 rpm motors with Ø176 mm paddle wheels, tank steering. Ground clearance 10 mm |
-| Intake belt C1 | 80 mm wide printed link belt, 29 links (7 with cleats), 50° incline, ≈ 64 mm/s |
-| Sorting belt C2 | 80 mm wide, 39 links, 310 mm between drums, ≈ 56 mm/s |
-| Bins | 4 removable buckets, each 93 × 99 × 74 mm inside (≈ 0.65 L) |
-| Item size | Up to about 75 mm wide, 70 mm long and 50 mm tall: caps, small bottles, cans, cups, wrappers, foam |
+| Intake belt C1 | **120 mm wide** printed link belt, 29 links (7 with cleats), 50° incline, ≈ 64 mm/s |
+| Sorting belt C2 | **120 mm wide**, 52 links, 440 mm between drums, ≈ 56 mm/s |
+| Bins | 4 removable buckets, each 137 × 107 × 74 mm inside (≈ 1.1 L) |
+| Item size | Up to about 110 mm wide, 100 mm long and 50 mm tall: caps, bottles, cans, cups, wrappers, foam |
 | Electronics | Raspberry Pi Zero 2 W, Pi camera (sorting), USB webcam (navigation), PCA9685 servo board, 2 × L298N, 3S1P 18650 battery |
 | Run time | About 1 h on a 3S1P pack, at roughly 2 A average (about 2 h with a 3S2P pack) |
 
@@ -85,17 +85,17 @@ Prices are approximate Philippine online prices (October 2026). Check them with 
 
 | Part | Qty | Approx. ₱ | Where |
 |---|---|---|---|
-| PLA filament, 1.75 mm (4.1 kg used) | 5 kg | 3,250 | MakerLab |
-| Sintra (PVC foam) board, 5 mm, piece at least 650 × 370 mm (deck) | 1 | 400 | sign shop, Lazada |
+| PLA filament, 1.75 mm (5.4 kg used) | 6 kg | 3,900 | MakerLab |
+| Sintra (PVC foam) board, 5 mm, piece at least 780 × 410 mm (deck) | 1 | 500 | sign shop, Lazada |
 | M6 threaded rod, 1 m (4 drum axles) + 12 M6 nuts and washers | 1 | 150 | hardware store |
 | M3 screw and nut assortment (8–20 mm) | 1 | 250 | hardware store, MakerLab |
 | M2 screws (servo tabs, horns) + 6 × M3 grub screws | 1 | 110 | MakerLab |
 | Two-part epoxy (segment joints + a waterproof coat over the PLA) | 1 | 250 | hardware store |
 | Hot glue sticks, electrical tape, petroleum jelly | 1 | 130 | any |
-| **Mechanical subtotal** | | **≈ 4,540** | |
-| **Total** | | **≈ ₱12,960** | |
+| **Mechanical subtotal** | | **≈ 5,290** | |
+| **Total** | | **≈ ₱13,710** | |
 
-That is about ₱6,700 less than the first version of this design. The belt pins are 84 mm pieces of the same filament, so they cost nothing extra. The software is unchanged on the Pi Zero 2 W. It classifies about 2–3 frames per second, so each item takes about 2 s at the camera.
+The conveyors are now 120 mm wide (was 80 mm), which adds about ₱750 over the 80 mm version for more filament and a bigger deck. The belt pins are 84 mm pieces of the same filament, so they cost nothing extra. The software is unchanged on the Pi Zero 2 W. It classifies about 2–3 frames per second, so each item takes about 2 s at the camera.
 
 **Optional upgrades:**
 - Raspberry Pi 4 (+₱4,300): faster sorting. Its board holes differ: change `PI_HOLES` in `cad/electronics.py` to 58 × 49 mm.
@@ -109,30 +109,46 @@ Use PLA and coat the pontoons with epoxy, or use PETG if you can afford it. Use 
 
 | File | Qty | Size (mm) | Filament (g, all copies) | Note |
 |---|---|---|---|---|
-| `pontoon_bow_port.stl`, `pontoon_bow_stbd.stl` | 1 + 1 | 210 × 115 × 100 | 444 | |
-| `pontoon_mid.stl` | 2 | 210 × 115 × 100 | 516 | one per side |
-| `pontoon_stern_port.stl`, `pontoon_stern_stbd.stl` | 1 + 1 | 210 × 115 × 100 | 490 | |
-| `dowel.stl` | 8 | 6 × 6 × 22 | 4 | segment alignment |
-| `motor_saddle.stl` | 4 | 26 × 40 × 22 | 26 | |
-| `paddle_wheel.stl` | 4 | 176 × 176 × 34 | 411 | |
-| `belt_link.stl` | 61 | 27 × 10 × 80 | 378 | print on edge, as exported |
-| `belt_link_cleat.stl` | 7 | 27 × 30 × 80 | 70 | intake belt, every 4th link |
-| `drum_drive.stl` | 2 | 54 × 54 × 81 | 95 | |
-| `drum_idler.stl` | 2 | 54 × 54 × 81 | 96 | |
-| `c1_frame_lower.stl`, `c1_frame_upper.stl` | 1 + 1 | 120 × 96 × 137 | 216 | intake frame halves |
-| `c1_splice.stl` | 2 | 46 × 73 × 3 | 16 | joins the halves |
-| `c1_leg_port.stl`, `c1_leg_stbd.stl` | 1 + 1 | 47 × 91 × 14 | 17 | |
-| `c2_front_frame.stl` | 1 | 116 × 120 × 120 | 117 | tail drum, camera-zone walls, chute |
-| `c2_bed_beam.stl` | 1 | 192 × 84 × 41 | 127 | |
-| `c2_head_stand_drive.stl`, `c2_head_stand_idler.stl` | 1 + 1 | 84 × 65 × 17 | 20 | |
-| `sorter_frame_port.stl`, `sorter_frame_stbd.stl` | 1 + 1 | 204 × 120 × 131 | 266 | 2 bin bays each |
-| `sorter_cover_port.stl`, `sorter_cover_stbd.stl` | 1 + 1 | 204 × 108 × 23 | 108 | |
-| `servo_bridge.stl` | 4 | 42 × 25 × 3 | 9 | |
-| `flap_port.stl`, `flap_stbd.stl` | 2 + 2 | 98 × 72 × 6 | 36 | bin doors |
-| `bucket.stl` | 4 | 96 × 110 × 76 | 312 | slide out to empty |
-| `reject_tray.stl` | 1 | 36 × 81 × 44 | 26 | |
-| `electronics_box.stl`, `battery_box.stl`, `box_lid.stl` (×2) | 1 + 1 + 2 | 180 × 86 × 60 | 277 | |
-| `camera_mast.stl`, `nav_cam_bracket.stl` | 1 + 1 | – | 32 | |
+| `pontoon_bow_port.stl` | 1 | 190 × 115 × 100 | 199 |  |
+| `pontoon_bow_stbd.stl` | 1 | 190 × 115 × 100 | 199 |  |
+| `pontoon_mid.stl` | 4 | 190 × 115 × 100 | 942 | two per side |
+| `pontoon_stern_port.stl` | 1 | 190 × 115 × 100 | 222 |  |
+| `pontoon_stern_stbd.stl` | 1 | 190 × 115 × 100 | 222 |  |
+| `dowel.stl` | 8 | 6 × 6 × 22 | 4 |  |
+| `motor_saddle.stl` | 4 | 26 × 40 × 22 | 26 |  |
+| `paddle_wheel.stl` | 4 | 176 × 176 × 34 | 411 |  |
+| `belt_link.stl` | 74 | 27 × 10 × 120 | 555 | print on edge |
+| `belt_link_cleat.stl` | 7 | 27 × 30 × 120 | 92 | print on edge |
+| `drum_drive.stl` | 2 | 54 × 54 × 121 | 140 |  |
+| `drum_idler.stl` | 2 | 54 × 54 × 121 | 142 |  |
+| `c1_frame_lower.stl` | 1 | 160 × 96 × 119 | 103 | splice end on the bed |
+| `c1_frame_upper.stl` | 1 | 130 × 91 × 137 | 131 | splice end on the bed |
+| `c1_splice.stl` | 2 | 46 × 73 × 3 | 16 |  |
+| `c1_leg_port.stl` | 1 | 47 × 91 × 14 | 9 |  |
+| `c1_leg_stbd.stl` | 1 | 47 × 91 × 14 | 9 |  |
+| `c2_front_frame.stl` | 1 | 156 × 120 × 148 | 182 | tail end on the bed |
+| `c2_bed_beam_front.stl` | 1 | 152 × 124 × 41 | 156 | bed face down |
+| `c2_bed_beam_rear.stl` | 1 | 142 × 124 × 41 | 146 | bed face down |
+| `c2_head_stand_drive.stl` | 1 | 84 × 65 × 17 | 10 | port |
+| `c2_head_stand_idler.stl` | 1 | 84 × 65 × 17 | 10 | starboard |
+| `sorter_frame_front_port.stl` | 1 | 151 × 128 × 131 | 105 | bin 1 |
+| `sorter_frame_front_stbd.stl` | 1 | 151 × 128 × 131 | 105 | bin 2 |
+| `sorter_cover_front_port.stl` | 1 | 151 × 116 × 23 | 42 | bin 1 |
+| `sorter_cover_front_stbd.stl` | 1 | 151 × 116 × 23 | 42 | bin 2 |
+| `sorter_frame_rear_port.stl` | 1 | 150 × 128 × 131 | 97 | bin 3 |
+| `sorter_frame_rear_stbd.stl` | 1 | 150 × 128 × 131 | 97 | bin 4 |
+| `sorter_cover_rear_port.stl` | 1 | 149 × 116 × 23 | 41 | bin 3 |
+| `sorter_cover_rear_stbd.stl` | 1 | 149 × 116 × 23 | 41 | bin 4 |
+| `servo_bridge.stl` | 4 | 42 × 25 × 3 | 9 |  |
+| `flap_port.stl` | 2 | 144 × 72 × 6 | 25 | bins 1 + 3 |
+| `flap_stbd.stl` | 2 | 144 × 72 × 6 | 25 | bins 2 + 4 |
+| `bucket.stl` | 4 | 141 × 118 × 76 | 420 | handle faces outboard |
+| `reject_tray.stl` | 1 | 36 × 121 × 44 | 36 |  |
+| `electronics_box.stl` | 1 | 180 × 107 × 60 | 113 | port |
+| `battery_box.stl` | 1 | 180 × 107 × 60 | 111 | starboard |
+| `box_lid.stl` | 2 | 180 × 107 × 8 | 96 |  |
+| `camera_mast.stl` | 1 | 56 × 110 × 87 | 28 |  |
+| `nav_cam_bracket.stl` | 1 | 16 × 40 × 40 | 6 |  |
 
 The deck is cut from Sintra board using `deck/deck_template_1to1.svg`. Print it at 100% and check the 100 mm bar, then tape it on and trace. For a CNC shop, use `deck/deck_5mm_pvc.dxf`. Cut PVC with a knife or CNC router, never a laser: burning PVC releases chlorine gas.
 
@@ -142,10 +158,10 @@ The deck is cut from Sintra board using `deck/deck_template_1to1.svg`. Print it 
 
 1. **Pontoons.** Leak-test each segment under water for 60 s. Glue the segments end to end with epoxy and the dowels (bow + mid + stern, per side). Brush a thin epoxy coat over the outside.
 2. **Drive motors.** Put each JGA25-370 in its pocket with the gearbox face against the outer wall. Fit 2 × M3 screws through the slots, and put a saddle on top. Then fit the paddle wheels: the hub faces the hull, and an M3 grub screw goes onto the shaft flat.
-3. **Deck.** Screw the deck onto the pontoon tops with M3 × 16 self-tapping screws (36 holes). The deck clamps the motor saddles down. Pass the motor wires up through the 10 mm holes.
+3. **Deck.** Screw the deck onto the pontoon tops with M3 × 16 self-tapping screws (48 holes). The deck clamps the motor saddles down. Pass the motor wires up through the 10 mm holes.
 4. **Belts.** Join links with 84 mm pieces of 1.75 mm filament. Push each piece through, then melt both ends flat with a soldering iron.
    - C1: 29 links, with a cleat link at every 4th position.
-   - C2: 39 plain links.
+   - C2: 52 plain links.
    - Wrap each belt around its drums before closing the last joint. The cleats and the plate's flat face point outward.
 5. **Intake (C1).**
    1. Bolt the two frame halves together with the splice plates (M3 × 12, 8 per side). Fit the drums on M6 rod axles, with the drive drum's D-bore on the port side.

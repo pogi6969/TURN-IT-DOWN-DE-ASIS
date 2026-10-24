@@ -6,8 +6,9 @@ from manifold3d import Manifold
 
 from common import *
 
-BOX_X = (120.0, 300.0)
-BOX_Y = (62.0, 148.0)
+BOX_X = (BOAT_L / 2 - 195.0, BOAT_L / 2 - 15.0)
+BOX_Y = (FRAME_IN + FRAME_T + 18.0, P_OUT - 5.0)
+BOX_YC = (BOX_Y[0] + BOX_Y[1]) / 2
 BOX_H = 60.0
 WALL = 2.4
 PI_HOLES = [(0, 0), (58, 0), (0, 23), (58, 23)]            # Raspberry Pi Zero 2 W, M2.5
@@ -62,7 +63,7 @@ def box_lid():
     i = WALL + 0.3                                                            # lip fits inside the walls
     m = m + (box(x0 + i, x1 - i, y0 + i, y1 - i, z - 5, z + 0.01)
              - box(x0 + i + 1.6, x1 - i - 1.6, y0 + i + 1.6, y1 - i - 1.6, z - 6, z + 1))
-    for (x, y) in ((x1 - 12, 95.0), (x1 - 12, 115.0)):                       # nav-camera bracket bolts
+    for (x, y) in ((x1 - 12, BOX_YC - 10), (x1 - 12, BOX_YC + 10)):         # nav-camera bracket bolts
         m = m - cyl_z(1.7, z - 1, z + 4, x, y, 16)
     return m
 
@@ -92,12 +93,12 @@ def nav_cam_bracket():
     """L-bracket on the electronics-box lid; 1/4-20 tripod bolt or zip ties for a USB webcam."""
     z = DECK_Z + BOX_H + 2.5
     x1 = BOX_X[1]
-    base = box(x1 - 20, x1 - 4, 85, 125, z, z + 4)
-    for y in (95.0, 115.0):
+    base = box(x1 - 20, x1 - 4, BOX_YC - 20, BOX_YC + 20, z, z + 4)
+    for y in (BOX_YC - 10, BOX_YC + 10):
         base = base - cyl_z(1.7, z - 1, z + 5, x1 - 12, y, 16)
-    up = box(x1 - 8, x1 - 4, 85, 125, z, z + 40)
+    up = box(x1 - 8, x1 - 4, BOX_YC - 20, BOX_YC + 20, z, z + 40)
     m = base + up
-    m = m - cyl_x(3.3, x1 - 9, x1 - 3, 105, z + 28, 24)                   # 1/4" bolt
-    for y in (90.0, 120.0):
+    m = m - cyl_x(3.3, x1 - 9, x1 - 3, BOX_YC, z + 28, 24)                   # 1/4" bolt
+    for y in (BOX_YC - 15, BOX_YC + 15):
         m = m - box(x1 - 9, x1 - 3, y - 1.5, y + 1.5, z + 8, z + 14)       # zip-tie slots
     return m

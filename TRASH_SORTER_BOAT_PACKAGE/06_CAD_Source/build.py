@@ -34,7 +34,7 @@ def print_parts():
     P = {
         "pontoon_bow_port": (hull.pontoon_segment("bow"), 1, ""),
         "pontoon_bow_stbd": (mirror_y(hull.pontoon_segment("bow")), 1, ""),
-        "pontoon_mid": (hull.pontoon_segment("mid"), 2, "one per side"),
+        "pontoon_mid": (hull.pontoon_segment("mid"), 4, "two per side"),
         "pontoon_stern_port": (hull.pontoon_segment("stern"), 1, ""),
         "pontoon_stern_stbd": (mirror_y(hull.pontoon_segment("stern")), 1, ""),
         "dowel": (hull.dowel(), 8, ""),
@@ -50,13 +50,18 @@ def print_parts():
         "c1_leg_port": (fr.c1_leg().rotate([90, 0, 0]), 1, ""),
         "c1_leg_stbd": (mirror_y(fr.c1_leg()).rotate([-90, 0, 0]), 1, ""),
         "c2_front_frame": (fr.c2_front().transform(_swap([[0, 1, 0], [0, 0, 1], [1, 0, 0]])), 1, "tail end on the bed"),
-        "c2_bed_beam": (fr.c2_beam().transform(_swap([[1, 0, 0], [0, 1, 0], [0, 0, -1]])), 1, "bed face down"),
+        "c2_bed_beam_front": (fr.c2_beam_piece(0).transform(_swap([[1, 0, 0], [0, 1, 0], [0, 0, -1]])), 1, "bed face down"),
+        "c2_bed_beam_rear": (fr.c2_beam_piece(1).transform(_swap([[1, 0, 0], [0, 1, 0], [0, 0, -1]])), 1, "bed face down"),
         "c2_head_stand_drive": (fr.c2_head_stand(True).transform(_swap([[1, 0, 0], [0, 0, 1], [0, 1, 0]])), 1, "port"),
         "c2_head_stand_idler": (mirror_y(fr.c2_head_stand(False)).transform(_swap([[1, 0, 0], [0, 0, 1], [0, -1, 0]])), 1, "starboard"),
-        "sorter_frame_port": (so.sorter_frame(), 1, ""),
-        "sorter_frame_stbd": (mirror_y(so.sorter_frame()), 1, ""),
-        "sorter_cover_port": (so.sorter_cover(), 1, ""),
-        "sorter_cover_stbd": (mirror_y(so.sorter_cover()), 1, ""),
+        "sorter_frame_front_port": (so.piece(so.sorter_frame(), 0), 1, "bin 1"),
+        "sorter_frame_front_stbd": (mirror_y(so.piece(so.sorter_frame(), 0)), 1, "bin 2"),
+        "sorter_cover_front_port": (so.piece(so.sorter_cover(), 0), 1, "bin 1"),
+        "sorter_cover_front_stbd": (mirror_y(so.piece(so.sorter_cover(), 0)), 1, "bin 2"),
+        "sorter_frame_rear_port": (so.piece(so.sorter_frame(), 1), 1, "bin 3"),
+        "sorter_frame_rear_stbd": (mirror_y(so.piece(so.sorter_frame(), 1)), 1, "bin 4"),
+        "sorter_cover_rear_port": (so.piece(so.sorter_cover(), 1), 1, "bin 3"),
+        "sorter_cover_rear_stbd": (mirror_y(so.piece(so.sorter_cover(), 1)), 1, "bin 4"),
         "servo_bridge": (so.servo_bridge(), 4, ""),
         "flap_port": (so.flap().rotate([90, 0, 0]), 2, "bins 1 + 3"),
         "flap_stbd": (mirror_y(so.flap()).rotate([-90, 0, 0]), 2, "bins 2 + 4"),
@@ -110,10 +115,11 @@ BOUGHT_G = {"drive motors JGA25-370 x4": 4 * 95, "conveyor motors JGA25-370 x2":
 
 
 def mass_and_draft(print_g):
-    deck_area = (630 * 2 * P_OUT - (315 - C1_OPEN_X) * 2 * P_IN) / 100.0   # cm2
+    deck_area = (BOAT_L * 2 * P_OUT - (BOAT_L / 2 - C1_OPEN_X) * 2 * P_IN) / 100.0   # cm2
     BOUGHT_G["deck 5 mm PVC foam"] = deck_area * 0.5 * 0.55
     dry = print_g + sum(BOUGHT_G.values())
-    pontoons = assembly.union([hull.pontoon_segment(k) for k in ("stern", "mid", "bow")])
+    pontoons = assembly.union([hull.pontoon_segment("stern"), hull.pontoon_segment("bow")]
+                              + [hull.pontoon_segment("mid").translate([x0 - SEG_X[1][0], 0, 0]) for (x0, x1) in SEG_X[1:-1]])
     pontoons = pontoons + mirror_y(pontoons)
 
     def draft(mass_g):
