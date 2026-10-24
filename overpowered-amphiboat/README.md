@@ -59,7 +59,7 @@ Print settings (PETG):
 | `dowel.stl` | 8 | 6 × 6 × 22 | 4 |
 | `bay_lid.stl` | 1 | 176 × 194 × 10 | 93 |
 | `pocket_cover.stl` (also clamps the motors) | 2 | 56 × 196 × 44 | 127 |
-| `wheel.stl` | 4 | 176 × 176 × 40 | ≈ 430 |
+| `wheel.stl` | 4 | 176 × 176 × 40 | 450 |
 | `fan_duct_port.stl`, `fan_duct_stbd.stl` | 1 each | 183 × 148 × 45 | 162 |
 | `rear_guard.stl` | 2 | 148 × 148 × 2.5 | 29 |
 
