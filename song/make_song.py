@@ -1,6 +1,6 @@
 """Render "Kunwari Okay": demo mix, karaoke mix and lyric video.
 
-Usage: python3 make_song.py [out_dir]
+Usage: python3 make_song.py [tl|en] [out_dir]
 Needs numpy, pillow and ffmpeg.
 """
 import os
@@ -18,7 +18,8 @@ BPM = 80
 BEAT = 60 / BPM
 BAR = 4 * BEAT
 S16 = BEAT / 4
-OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.dirname(os.path.abspath(__file__))
+LANG = sys.argv[1] if len(sys.argv) > 1 else 'tl'
+OUT = sys.argv[2] if len(sys.argv) > 2 else os.path.dirname(os.path.abspath(__file__))
 
 # ---------------------------------------------------------------- song data
 
@@ -53,6 +54,33 @@ FC = ["Ayoko nang magkunwari pa", "Hindi ako okay, at okay lang 'yon pala",
       "Kaya ikaw, na nakangiti rin", "Na tulad ko, pagod din",
       "Hindi ka nag-iisa rito", "Yayakapin kita, totoo"]
 
+EN = dict(
+    V1=["Six a.m., wake up again", "Practice my smile in the mirror, pretend",
+        "Typing \"lol\" in the group chat", "But nobody's laughing where I'm at",
+        "\"You're so strong,\" that's what they say", "They don't see the war I fight every day",
+        "I cry it all into my pillow", "So nobody has to know"],
+    PRE_L=["And if you ask me how I'm doing tonight", "I'm so used to saying \"yeah, I'm alright\""],
+    CH=["I'm fine, I'm fine, I'm holding on", "Pretending that my heart's not already gone",
+        "I laugh it off, I hide the pain", "'Cause if I start crying, I won't stop again",
+        "I'm fine, I'm fine, even when I'm not", "Wish somebody noticed what I've got",
+        "Behind every \"don't worry 'bout me\"", "There's a kid still waiting for somebody"],
+    V2=["Oldest child, I'm the one they lean on", "But where do I go when my strength is gone?",
+        "Mom's too tired from working late", "Dad's been gone, I stopped asking why he never came",
+        "You were supposed to be my rest", "But you left me on \"seen\" like all the rest",
+        "Like everyone, you walked away", "And I'm still pretending I'm okay"],
+    BR=["I'm not weak, I'm just tired", "I'm not giving up, I'm just catching my breath",
+        "And if tomorrow I still wake up", "It means I'm still strong enough"],
+    FC=["I don't wanna pretend no more", "I'm not okay, and that's what tears are for",
+        "I'll cry out every bit of the pain", "Tomorrow the sun will rise again",
+        "So you, who's smiling through it too", "Tired like me, I see you",
+        "You're not alone in this", "I'll hold you through it, I promise"],
+    OUTRO=["How are you?", "...Really, though?"])
+TITLE, HOOK, SLUG, END_MSG = 'Kunwari Okay', 'Kunwari okay', 'kunwari-okay', 'Kumusta ka, totoo?  Kamustahin mo rin sila.'
+OUTRO = ["Kumusta ka?", "...'Yung totoo?"]
+if LANG == 'en':
+    V1, PRE_L, CH, V2, BR, FC, OUTRO = (EN[k] for k in ('V1', 'PRE_L', 'CH', 'V2', 'BR', 'FC', 'OUTRO'))
+    TITLE, HOOK, SLUG, END_MSG = "I'm Fine", "I'm fine, I'm fine", 'im-fine', 'How are you, really?  Check on your people.'
+
 # (label, chords per bar, lyric lines, bars per line, energy, transpose, register lo/hi)
 SECTIONS = [
     ('Intro', ['D', 'A', 'Bm', 'G'], [], 1, 0, 0, None),
@@ -64,7 +92,7 @@ SECTIONS = [
     ('Chorus', CHORUS, CH, 2, 3, 0, (66, 76)),
     ('Bridge', ['Bm', 'A', 'G', 'D', 'Bm', 'A', 'G', 'B'], BR, 2, 2, 0, (64, 76)),
     ('Final Chorus', CHORUS, FC, 2, 4, 2, (66, 76)),
-    ('Outro', ['G', 'A', 'D', 'D'], ["Kumusta ka?", "...'Yung totoo?"], 2, 0, 2, (64, 71)),
+    ('Outro', ['G', 'A', 'D', 'D'], OUTRO, 2, 0, 2, (64, 71)),
 ]
 
 # ---------------------------------------------------------------- helpers
@@ -76,6 +104,15 @@ def mtof(m):
 def syllables(line):
     """Tagalog-ish syllables: one per vowel, a few English digraphs merged."""
     out = []
+    if LANG == 'en':
+        for word in re.findall(r"[a-zA-Z']+", line.replace('-', ' ')):
+            w = word.lower().replace("'", '')
+            w = re.sub(r'([^aeiouy])e$', r'\1', w) if len(w) > 2 else w
+            groups = re.findall(r'[aeiouy]+', w) or ['a']
+            for i, g in enumerate(groups):
+                v = 'a' if g[0] == 'y' else g[0]
+                out.append((v, i == len(groups) - 1))
+        return out
     for word in re.findall(r"[a-zA-Z']+", line.replace('-', ' ')):
         w = word.lower().replace("'", '')
         w = w.replace('ee', 'i').replace('ou', 'u').replace('oo', 'u')
@@ -159,7 +196,7 @@ for label, chords, lines, bpl, energy, tr, reg in SECTIONS:
         cs = chords[li * bpl:(li + 1) * bpl]
         lo, hi = reg
         key = line
-        if line.startswith('Kunwari okay'):
+        if line.startswith(HOOK):
             key = 'hook'
         if key not in melody_cache:
             start_hi = (lo + hi) // 2 + (2 if energy >= 3 else -1)
@@ -447,7 +484,7 @@ tmp = os.path.join(OUT, '_tmp')
 os.makedirs(tmp, exist_ok=True)
 write_wav(f'{tmp}/full.wav', full)
 write_wav(f'{tmp}/inst.wav', inst)
-for src, name in (('full', 'kunwari-okay-demo.mp3'), ('inst', 'kunwari-okay-karaoke.mp3')):
+for src, name in (('full', f'{SLUG}-demo.mp3'), ('inst', f'{SLUG}-karaoke.mp3')):
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', f'{tmp}/{src}.wav',
                     '-b:a', '192k', os.path.join(OUT, name)], check=True)
 
@@ -515,7 +552,7 @@ ff = subprocess.Popen(
      '-s', f'{W}x{H}', '-r', str(FPS), '-i', '-', '-i', f'{tmp}/full.wav',
      '-c:v', 'libx264', '-preset', 'medium', '-crf', '26', '-pix_fmt', 'yuv420p',
      '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart',
-     os.path.join(OUT, 'kunwari-okay-lyric-video.mp4')],
+     os.path.join(OUT, f'{SLUG}-lyric-video.mp4')],
     stdin=subprocess.PIPE)
 
 nframes = int(SONG_LEN * FPS)
@@ -540,14 +577,14 @@ for fi in range(nframes):
         od.ellipse([x - r, y - r, x + r, y + r], fill=(255, 190, 220, a))
     img = Image.alpha_composite(img.convert('RGBA'), ov)
     d = ImageDraw.Draw(img)
-    d.text((40, 30), 'KUNWARI OKAY', font=font(F_BIG, 22), fill=(255, 255, 255, 200))
+    d.text((40, 30), TITLE.upper(), font=font(F_BIG, 22), fill=(255, 255, 255, 200))
     d.text((W - 40, 30), section.upper(), font=font(F_REG, 20), fill=(255, 210, 230, 190), anchor='ra')
 
     first_vocal = lyric_track[0][0]
     if t < first_vocal - 0.5:
         a = int(255 * min(1, t / 1.5, (first_vocal - 0.5 - t) / 1.0))
-        d.text((W / 2, H / 2 - 30), 'Kunwari Okay', font=font(F_TH, 84), fill=(255, 255, 255, a), anchor='mm')
-        d.text((W / 2, H / 2 + 45), 'original OPM hugot ballad  ·  lyric video', font=font(F_REG, 24),
+        d.text((W / 2, H / 2 - 30), TITLE, font=font(F_TH, 84), fill=(255, 255, 255, a), anchor='mm')
+        d.text((W / 2, H / 2 + 45), 'original hugot ballad  ·  lyric video', font=font(F_REG, 24),
                fill=(255, 210, 230, a), anchor='mm')
     elif cur_i is not None:
         s, e, text, label, notes = lyric_track[cur_i]
@@ -574,10 +611,10 @@ for fi in range(nframes):
         last = lyric_track[-1][1]
         if t > last:
             a = int(255 * min(1, (t - last) / 1.2))
-            d.text((W / 2, H / 2), 'Kumusta ka, totoo?  Kamustahin mo rin sila.', font=font(F_REG, 32),
+            d.text((W / 2, H / 2), END_MSG, font=font(F_REG, 32),
                    fill=(255, 225, 120, a), anchor='mm')
     # progress bar
-    d.rectangle([40, H - 34, W - 40, H - 31], fill=(255, 255, 255, 40))
+    d.rectangle([40, H - 34, W - 40, H - 31], fill=(70, 50, 80))
     d.rectangle([40, H - 34, 40 + (W - 80) * t / SONG_LEN, H - 31], fill=(255, 190, 220, 200))
     mm, ss = divmod(int(t), 60)
     d.text((40, H - 58), f'{mm}:{ss:02d}', font=font(F_REG, 16), fill=(255, 255, 255, 140))
