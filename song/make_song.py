@@ -425,10 +425,17 @@ for idx, (t0, c, tr, energy, label, first) in enumerate(chord_track):
         for k in range(4):
             add(drums, SN, t0 + 2 * BEAT + k * BEAT / 2, 0.25 + 0.12 * k)
 
+if os.environ.get('VOCAL', 'sung') == 'sung':
+    from sing import Singer
+    singer = Singer(LANG, syllables)
 prev = None
 for start, end, text, label, notes in lyric_track:
     vel = {'Verse 1': 0.75, 'Verse 2': 0.85, 'Chorus': 1.0, 'Final Chorus': 1.1,
            'Bridge': 0.95, 'Outro': 0.7}.get(label, 0.9)
+    if os.environ.get('VOCAL', 'sung') == 'sung':
+        y, t0 = singer.line(text, notes)
+        add(vox, y, t0, vel)
+        continue
     for t, d, m, v in notes:
         add(vox, voice(m, d, v, prev, vel), t)
         prev = m
@@ -470,7 +477,7 @@ def master(L, R):
 
 inst = master(instL + revL * 0.5, instR + revR * 0.5)
 full = master(instL + revL * 0.5 + vox + vrevL * 0.35 + vdl,
-              instR + revR * 0.5 + vox + vrevR * 0.35 + vdl)
+              instR + revR * 0.5 + np.concatenate([np.zeros(600), vox[:-600]]) * 0.9 + vrevR * 0.35 + vdl)
 
 
 def write_wav(path, st):
