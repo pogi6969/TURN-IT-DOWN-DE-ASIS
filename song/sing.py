@@ -1,4 +1,5 @@
-"""Turn Kokoro TTS words into a sung line: WORLD vocoder re-pitch + time-stretch to the melody.
+"""Turn Kokoro TTS words into a sung line: WORLD vocoder re-pitch + time-stretch to the melody,
+with singer-style pitch scoops, vibrato, timing, dynamics, breathiness and inhales.
 
 Model files: kokoro-v1.0.onnx and voices-v1.0.bin from
 https://github.com/thewh1teagle/kokoro-onnx/releases/tag/model-files-v1.0
@@ -14,8 +15,11 @@ from scipy.signal import resample_poly
 
 FS = 24000
 FP = 5.0  # WORLD frame period, ms
+FPS = 1000 / FP
 TL_WORDS = {'ng': 'nang', 'mga': 'manga', 'seen': 'sin', 'okay': 'okey', 'group': 'grup',
-            'chat': 'chat', 'haha': 'jaja'}
+            'chat': 'chat', 'haha': 'jaja', 'number': 'namber', 'story': 'stori', 'jacket': 'dyaket',
+            'unfollow': 'anfolou', 'follow': 'folou', 'plaza': 'plasa', 'abroad': 'abrod',
+            'text': 'tekst', 'call': 'kol'}
 
 
 def tl_tts(tok):
@@ -25,13 +29,22 @@ def tl_tts(tok):
     return w.replace('h', 'j')
 
 
+def wobble(rng, n, win):
+    """Unit-variance noise smoothed over `win` frames."""
+    win = max(3, win)
+    x = rng.normal(0, 1, n + 2 * win)
+    k = np.hanning(win)
+    y = np.convolve(x, k / k.sum(), 'same')[win:win + n]
+    return y / (np.std(y) + 1e-9)
+
+
 class Singer:
-    def __init__(self, lang, syllables):
+    def __init__(self, lang, syllables, seed=11):
         d = os.environ.get('KOKORO_DIR', '/tmp/claude-0/models')
         self.k = Kokoro(f'{d}/kokoro-v1.0.onnx', f'{d}/voices-v1.0.bin')
         self.lang = lang
         self.syllables = syllables
-        self.rng = np.random.default_rng(11)
+        self.rng = np.random.default_rng(seed)
         self.cache = {}
 
     def words(self, line):
@@ -50,11 +63,13 @@ class Singer:
         else:
             text, voice, lang = ' '.join(tl_tts(t) for t in toks), 'ef_dora', 'es'
         if text not in self.cache:
-            s, sr = self.k.create(text, voice=voice, lang=lang, speed=0.95)
+            s, _ = self.k.create(text, voice=voice, lang=lang, speed=0.8)
             s = np.asarray(s, dtype=np.float64)
             idx = np.nonzero(np.abs(s) > 0.02 * np.max(np.abs(s)))[0]
             s = s[max(0, idx[0] - 200): idx[-1] + 400]
-            f0, sp, ap = pw.wav2world(s, FS, frame_period=FP)
+            f0, t = pw.harvest(s, FS, f0_floor=70, f0_ceil=800, frame_period=FP)
+            sp = pw.cheaptrick(s, f0, t, FS)
+            ap = pw.d4c(s, f0, t, FS)
             self.cache[text] = (f0, sp, ap)
         return self.cache[text]
 
@@ -86,61 +101,111 @@ class Singer:
             segs.append((a, p, min(ve, b), b))
         return segs
 
-    def line(self, text, notes, out_sr=44100):
+    def inhale(self, dur):
+        n = int(dur * FS)
+        X = np.fft.rfft(self.rng.normal(0, 1, n))
+        f = np.fft.rfftfreq(n, 1 / FS)
+        shape = 0.6 * np.exp(-((f - 1600) / 900) ** 2) + np.exp(-((f - 4200) / 1800) ** 2) + 0.15
+        shape[f < 300] = 0
+        y = np.fft.irfft(X * shape, n)
+        e = np.sin(np.pi / 2 * np.linspace(0, 1, n)) ** 2
+        k = int(0.015 * FS)
+        e[-k:] *= np.linspace(1, 0, k)
+        y *= e
+        return y / (np.sqrt(np.mean(y ** 2)) + 1e-9)
+
+    def line(self, text, notes, out_sr=44100, breath=True):
         """notes: [(time, dur, midi, vowel)] one per syllable. Returns (audio, start_time)."""
-        frames_f0, frames_sp, frames_ap = [], [], []
-        t_cursor = None
-        lead = 0.0
-        ni = 0
-        prev_m = None
-        start = notes[0][0]
+        rng = self.rng
+        syl = []
         for toks, n in self.words(text):
             f0, sp, ap = self.tts(toks)
-            segs = self.split(f0, sp, n)
-            for j, (a, p, ve, b) in enumerate(segs):
-                if ni >= len(notes):
-                    break
-                t, d, m, _ = notes[ni]
-                onset = p - a
-                coda = (b - ve) if j == n - 1 else 0
-                if ni == 0:
-                    lead = onset * FP / 1000
-                    t_cursor = start - lead
-                # frames until this syllable's nucleus should hit the note time
-                gap = int(round((t - onset * FP / 1000 - t_cursor) * 1000 / FP))
-                if gap > 0:
-                    frames_f0.append(np.zeros(gap))
-                    frames_sp.append(np.repeat(frames_sp[-1][-1:] if frames_sp else sp[:1], gap, 0) * 1e-4)
-                    frames_ap.append(np.ones((gap, ap.shape[1])))
-                    t_cursor += gap * FP / 1000
-                D = max(4, int(d * 1000 / FP) - (6 if j == n - 1 else 0))
-                body = max(2, D - coda)
-                idx = np.concatenate([np.arange(a, p),
-                                      np.linspace(p, ve - 1, body),
-                                      np.arange(ve, ve + coda)])
-                ii = np.clip(np.round(idx).astype(int), 0, len(f0) - 1)
-                voiced = f0[ii] > 0
-                voiced[len(np.arange(a, p)):len(np.arange(a, p)) + body] |= idx[(p - a):(p - a) + body] < ve - 1
-                L = len(ii)
-                tt = np.arange(L) * FP / 1000
-                semis = np.full(L, float(m))
-                st = prev_m if prev_m is not None and abs(prev_m - m) <= 7 else m - 0.6
-                semis += (st - m) * np.exp(-tt / 0.045)
-                semis += np.clip((tt - 0.28) / 0.35, 0, 1) * 0.22 * np.sin(2 * np.pi * 5.3 * tt + self.rng.random() * 6)
-                semis += 0.06 * np.sin(2 * np.pi * 0.9 * tt + self.rng.random() * 6)
-                if d > 0.6:  # slight fall-off at the end of long notes
-                    semis -= np.clip((tt - (L * FP / 1000 - 0.12)) / 0.12, 0, 1) * 0.5
-                nf0 = np.where(voiced, 440 * 2 ** ((semis - 69) / 12), 0.0)
-                frames_f0.append(nf0)
-                frames_sp.append(sp[ii])
-                frames_ap.append(ap[ii])
-                t_cursor += L * FP / 1000
-                prev_m = m
-                ni += 1
-        f0 = np.concatenate(frames_f0)
-        sp = np.ascontiguousarray(np.concatenate(frames_sp))
-        ap = np.ascontiguousarray(np.concatenate(frames_ap))
-        y = pw.synthesize(f0, sp, ap, FS, FP)
-        y = resample_poly(y, 147, 80) if out_sr == 44100 else y
-        y /= np.sqrt(np.mean(y ** 2)) + 1e-9
-        return y * 0.12, start - lead
+            wj = float(np.clip(rng.normal(0.012, 0.012), -0.02, 0.04))  # a hair behind the beat
+            for j, seg in enumerate(self.split(f0, sp, n)):
+                syl.append((f0, sp, ap, seg, j == n - 1, wj))
+        nn = min(len(syl), len(notes))
+        ons = [syl[i][3][1] - syl[i][3][0] for i in range(nn)]
+        t_ref = notes[0][0] + syl[0][5] - ons[0] / FPS - 0.02
+        nuc = [int(round((notes[i][0] + syl[i][5] - t_ref) * FPS)) for i in range(nn)]
+        F0, SP, AP, GN, BR = [], [], [], [], []
+        cur, prev_m = 0, None
+        for i in range(nn):
+            f0, sp, ap, (a, p, ve, b), wend, _ = syl[i]
+            t, d, m, _ = notes[i]
+            on = p - a
+            start = nuc[i] - on
+            if start < cur and on > 1:  # running late: shorten the consonant onset
+                cut = min(on - 1, cur - start)
+                a, on, start = a + cut, on - cut, start + cut
+            gap = start - cur
+            if gap > 0:
+                F0.append(np.zeros(gap))
+                SP.append(np.repeat(sp[a:a + 1], gap, 0))
+                AP.append(np.ones((gap, ap.shape[1])))
+                GN.append(np.full(gap, 1e-3))
+                BR.append(np.zeros(gap))
+                cur += gap
+            legato = i > 0 and gap <= 0
+            coda = (b - ve) if wend else 0
+            note_end = nuc[i] + int(d * FPS)
+            end = note_end if i + 1 == nn else min(note_end, nuc[i + 1] - ons[i + 1])
+            if i + 1 == nn:
+                end -= 4
+            rest_after = i + 1 == nn or note_end < nuc[i + 1] - ons[i + 1] - 10
+            body = max(3, end - (cur + on) - coda)
+            pos = np.concatenate([np.arange(a, p, dtype=float), np.linspace(p, max(p, ve - 1), body),
+                                  np.arange(ve, ve + coda, dtype=float)])
+            i0 = np.clip(np.floor(pos).astype(int), 0, len(f0) - 1)
+            i1 = np.clip(i0 + 1, 0, len(f0) - 1)
+            w = (pos - np.floor(pos))[:, None]
+            L = len(pos)
+            voiced = f0[i0] > 0
+            voiced[on:on + body] = True
+            tt = (np.arange(L) - on) / FPS  # seconds from the vowel
+            dur_s = body / FPS
+            # pitch: scoop into the note, vibrato that blooms late, drift, jitter, fall at phrase ends
+            if legato and abs(prev_m - m) <= 9:
+                st, tau = prev_m - m, rng.uniform(0.035, 0.06)
+            else:
+                st, tau = -rng.uniform(0.4, 1.0), rng.uniform(0.05, 0.08)
+            semis = m + st * np.exp(-np.maximum(tt, 0) / tau)
+            if legato and m - prev_m >= 3:
+                semis += 0.25 * np.exp(-((tt - 0.09) / 0.04) ** 2)
+            od, dv, vr = rng.uniform(0.2, 0.35), rng.uniform(0.15, 0.32), rng.uniform(5.0, 5.9)
+            vph = 2 * np.pi * np.cumsum(vr + 0.35 * wobble(rng, L, 60)) / FPS + rng.random() * 6.3
+            semis += np.clip((tt - od) / 0.35, 0, 1) * dv * np.sin(vph)
+            semis += 0.07 * wobble(rng, L, 40) + 0.025 * wobble(rng, L, 3)
+            fo = np.clip((tt - (dur_s - 0.15)) / 0.15, 0, 1) if rest_after else np.zeros(L)
+            semis -= fo ** 2 * rng.uniform(0.4, 1.3)
+            # loudness: phrase arc, soft attack, swell on long notes, shimmer, release
+            g = np.full(L, 0.86 + 0.14 * np.sin(np.pi * (i + 0.5) / nn))
+            g *= np.clip(0.85 + 0.15 * tt / 0.04, 0.85, 1) if legato else np.clip(0.6 + 0.4 * tt / 0.06, 0.6, 1)
+            if dur_s > 0.5:
+                g *= 1 + 0.12 * np.sin(np.pi * np.clip(tt / dur_s, 0, 1))
+            g *= (1 + 0.05 * wobble(rng, L, 8)) * (1 - 0.85 * fo)
+            br = 0.03 + 0.3 * fo
+            if not legato:
+                br = br + 0.12 * np.clip(1 - (tt + 0.02) / 0.06, 0, 1)
+            F0.append(np.where(voiced, 440 * 2 ** ((semis - 69) / 12), 0.0))
+            SP.append(sp[i0] * (1 - w) + sp[i1] * w)
+            AP.append(ap[i0] * (1 - w) + ap[i1] * w)
+            GN.append(g)
+            BR.append(br)
+            cur += L
+            prev_m = m
+        GN, BR = np.concatenate(GN), np.concatenate(BR)
+        SP = np.concatenate(SP) * (GN ** 2)[:, None]
+        AP = np.concatenate(AP)
+        AP = 1 - (1 - AP) * (1 - np.clip(BR, 0, 0.9)[:, None] * np.linspace(0.25, 1, AP.shape[1])[None, :])
+        y = pw.synthesize(np.ascontiguousarray(np.concatenate(F0)), np.ascontiguousarray(SP),
+                          np.ascontiguousarray(AP), FS, FP)
+        loud = y[np.abs(y) > 0.05 * np.max(np.abs(y))]
+        y = y / (np.sqrt(np.mean(loud ** 2)) + 1e-9) * 0.12
+        t0 = t_ref
+        if breath and rng.random() < 0.75:
+            bd = rng.uniform(0.18, 0.3)
+            y = np.concatenate([self.inhale(bd) * 0.12 * rng.uniform(0.06, 0.12), np.zeros(int(0.03 * FS)), y])
+            t0 -= bd + 0.03
+        if out_sr == 44100:
+            y = resample_poly(y, 147, 80)
+        return y, t0

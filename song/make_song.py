@@ -25,7 +25,7 @@ OUT = sys.argv[2] if len(sys.argv) > 2 else os.path.dirname(os.path.abspath(__fi
 
 CHORDS = {
     'D': (2, (0, 4, 7)), 'E': (4, (0, 4, 7)), 'A': (9, (0, 4, 7)), 'B': (11, (0, 4, 7)),
-    'G': (7, (0, 4, 7)), 'Bm': (11, (0, 3, 7)), 'Em': (4, (0, 3, 7)), 'F#m': (6, (0, 3, 7)),
+    'G': (7, (0, 4, 7)), 'C': (0, (0, 4, 7)), 'Cadd9': (0, (0, 4, 7, 2)), 'Bm': (11, (0, 3, 7)), 'Em': (4, (0, 3, 7)), 'F#m': (6, (0, 3, 7)),
 }
 D_SCALE = [2, 4, 6, 7, 9, 11, 1]
 
@@ -75,6 +75,7 @@ EN = dict(
         "So you, who's smiling through it too", "Tired like me, I see you",
         "You're not alone in this", "I'll hold you through it, I promise"],
     OUTRO=["How are you?", "...Really, though?"])
+INTRO_CH, BRIDGE_CH, OUTRO_CH = ['D', 'A', 'Bm', 'G'], ['Bm', 'A', 'G', 'D', 'Bm', 'A', 'G', 'B'], ['G', 'A', 'D', 'D']
 TITLE, HOOK, SLUG, END_MSG = 'Kunwari Okay', 'Kunwari okay', 'kunwari-okay', 'Kumusta ka, totoo?  Kamustahin mo rin sila.'
 OUTRO = ["Kumusta ka?", "...'Yung totoo?"]
 if LANG == 'en':
@@ -103,19 +104,45 @@ if LANG == 'bcl':
           "Dai ka nagsosolo digdi", "Kukugoson taka, totoo"]
     OUTRO = ["Kumusta ka?", "...An totoo?"]
     TITLE, HOOK, SLUG, END_MSG = 'Matapos an Bagyo', 'Matapos an bagyo, masirang', 'matapos-an-bagyo', 'Kumusta ka, an totoo?  Hapota man sinda.'
+if LANG == 'bcl5':
+    D_SCALE = [7, 9, 11, 0, 2, 4, 6]
+    VERSE = ['G', 'Cadd9', 'Em', 'D'] * 2
+    PRE = ['Em', 'C', 'D', 'D']
+    CHORUS = ['G', 'Cadd9', 'Em', 'D'] * 4
+    INTRO_CH, BRIDGE_CH, OUTRO_CH = ['G', 'Cadd9', 'Em', 'D'], ['Em', 'C', 'G', 'D', 'Em', 'C', 'D', 'E'], ['C', 'D', 'G', 'G']
+    V1 = ["Nakita ko sa story mo", "Kaiba mo na an iba", "Nakangirit ka na giraray",
+          "Ako digdi, nagdudumdom pa", "Nagdiklom an langit sa luwas", "Nag-uuran sa sakong kwarto",
+          "Signal number singko sa laog ko", "Dai ko na aram an gigibohon"]
+    PRE_L = ["Kun mahiling ko kamong duwa", "Itaas na an signal, ta madatong na ako"]
+    CH = ["Ako an signal number singko", "Kun maglakaw kamo sa plaza, maguuran",
+          "Saindong payong, lulupad sa doros", "Basang-basa kamo pag-uli",
+          "Ako an signal number singko", "Dai kamo makakaiwas sa sakong uran",
+          "Alagad pag nag-abot an aldaw", "May balangaw man na maabot"]
+    V2 = ["Nag-unfollow, nag-follow giraray", "Yaon pa sako an jacket mo",
+          "Si Nanay mo, nagte-text pa sako", "Nuarin daw ako mabisita?",
+          "Dinilit ko na an satong chat", "Pero dumdom ko pa an gabos",
+          "Bako ako dating arog kaini", "Ika an nagtukdo sako magdalugdog"]
+    BR = ["Pero gabos na bagyo, natatapos man", "Sa aga, ako naman an masirang",
+          "Kaya ngunyan, bayae mo na ako", "Mag-uuran muna ako"]
+    FC = ["Ako an signal number singko", "Alagad pagal na ako magdalugdog",
+          "Dai ko na kamo babagyohon", "Sakong sadiri an papayongan ko",
+          "Ako an signal number singko", "Sa huri, ako man an makakahiling nin aldaw",
+          "Paaram, padaba ko", "Dai na taka babasaon"]
+    OUTRO = ["Signal number singko...", "...pero matatapos man ini"]
+    TITLE, HOOK, SLUG, END_MSG = 'Signal No. 5', 'Ako an signal number singko', 'signal-no-5', 'Gabos na bagyo, natatapos man.'
 
 # (label, chords per bar, lyric lines, bars per line, energy, transpose, register lo/hi)
 SECTIONS = [
-    ('Intro', ['D', 'A', 'Bm', 'G'], [], 1, 0, 0, None),
+    ('Intro', INTRO_CH, [], 1, 0, 0, None),
     ('Verse 1', VERSE, V1, 1, 1, 0, (62, 71)),
     ('Pre-Chorus', PRE, PRE_L, 2, 2, 0, (64, 73)),
     ('Chorus', CHORUS, CH, 2, 3, 0, (66, 76)),
     ('Verse 2', VERSE, V2, 1, 2, 0, (62, 71)),
     ('Pre-Chorus', PRE, PRE_L, 2, 2, 0, (64, 73)),
     ('Chorus', CHORUS, CH, 2, 3, 0, (66, 76)),
-    ('Bridge', ['Bm', 'A', 'G', 'D', 'Bm', 'A', 'G', 'B'], BR, 2, 2, 0, (64, 76)),
+    ('Bridge', BRIDGE_CH, BR, 2, 2, 0, (64, 76)),
     ('Final Chorus', CHORUS, FC, 2, 4, 2, (66, 76)),
-    ('Outro', ['G', 'A', 'D', 'D'], OUTRO, 2, 0, 2, (64, 71)),
+    ('Outro', OUTRO_CH, OUTRO, 2, 0, 2, (64, 71)),
 ]
 
 # ---------------------------------------------------------------- helpers
@@ -396,6 +423,8 @@ padL = np.zeros(N); padR = np.zeros(N)
 bassB = np.zeros(N)
 drums = np.zeros(N); drumsR = np.zeros(N)
 vox = np.zeros(N)
+vox2 = np.zeros(N)
+vox3 = np.zeros(N)
 
 K, SN = kick(), snare()
 for idx, (t0, c, tr, energy, label, first) in enumerate(chord_track):
@@ -443,7 +472,7 @@ for idx, (t0, c, tr, energy, label, first) in enumerate(chord_track):
             add(drums, SN, t0 + 3 * BEAT, 0.3)
     if label == 'Pre-Chorus' and chord_track[idx + 1][4].endswith('Chorus') if idx + 1 < len(chord_track) else False:
         add(drumsR, swell(BAR), t0)
-    if label == 'Bridge' and c == 'B':
+    if label == 'Bridge' and idx + 1 < len(chord_track) and chord_track[idx + 1][4] != 'Bridge':
         add(drumsR, swell(BAR), t0, 1.4)
         for k in range(4):
             add(drums, SN, t0 + 2 * BEAT + k * BEAT / 2, 0.25 + 0.12 * k)
@@ -458,6 +487,10 @@ for start, end, text, label, notes in lyric_track:
     if os.environ.get('VOCAL', 'sung') == 'sung':
         y, t0 = singer.line(text, notes)
         add(vox, y, t0, vel)
+        if 'Chorus' in label:  # two looser double-tracks, panned
+            for buf in (vox2, vox3):
+                y2, t2 = singer.line(text, notes, breath=False)
+                add(buf, y2, t2, vel)
         continue
     for t, d, m, v in notes:
         add(vox, voice(m, d, v, prev, vel), t)
@@ -476,14 +509,29 @@ pianoL, pianoR = norm(pianoL) * 0.55, norm(pianoR) * 0.55
 padL, padR = norm(padL) * 0.35, norm(padR) * 0.35
 bassB = norm(bassB) * 0.45
 drums, drumsR = norm(drums) * 0.45, norm(drumsR) * 0.3
-vox = norm(vox) * 0.62
+def movavg(x, n):
+    c = np.cumsum(np.concatenate([[0.0], x]))
+    y = (c[n:] - c[:-n]) / n
+    return np.concatenate([np.full(n // 2, y[0]), y, np.full(len(x) - len(y) - n // 2, y[-1])])
+
+
+def comp(x, thr=0.3, ratio=3.0):
+    n = int(0.03 * SR)
+    env = np.sqrt(movavg(x ** 2, n)) + 1e-9
+    e = env / np.max(env)
+    return x * movavg(np.where(e > thr, (e / thr) ** (1 / ratio - 1), 1.0), n)
+
+
+vox, vox2, vox3 = comp(vox), comp(vox2 + 1e-9), comp(vox3 + 1e-9)
+vpk = np.max(np.abs(vox)) + 1e-9
+vox, vox2, vox3 = vox / vpk * 0.62, vox2 / vpk * 0.62, vox3 / vpk * 0.62
 
 instL = pianoL * 0.75 + pianoR * 0.25 + padL + bassB + drums + drumsR * 0.4
 instR = pianoR * 0.75 + pianoL * 0.25 + padR + bassB + drums + drumsR * 0.6
 sendL = pianoL * 0.25 + padL * 0.4 + drums * 0.12
 sendR = pianoR * 0.25 + padR * 0.4 + drums * 0.12
 revL, revR = reverb(sendL, seed=1), reverb(sendR, seed=2)
-vrevL, vrevR = reverb(vox, 2.6, 3), reverb(vox, 2.6, 4)
+vrevL, vrevR = reverb(vox + 0.3 * (vox2 + vox3), 2.6, 3), reverb(vox + 0.3 * (vox2 + vox3), 2.6, 4)
 # simple slap delay on vocal
 dly = int(BEAT * 0.75 * SR)
 vdl = np.concatenate([np.zeros(dly), vox[:-dly]]) * 0.12
@@ -499,8 +547,8 @@ def master(L, R):
 
 
 inst = master(instL + revL * 0.5, instR + revR * 0.5)
-full = master(instL + revL * 0.5 + vox + vrevL * 0.35 + vdl,
-              instR + revR * 0.5 + np.concatenate([np.zeros(600), vox[:-600]]) * 0.9 + vrevR * 0.35 + vdl)
+full = master(instL + revL * 0.5 + vox + 0.3 * vox2 + 0.12 * vox3 + vrevL * 0.35 + vdl,
+              instR + revR * 0.5 + vox + 0.3 * vox3 + 0.12 * vox2 + vrevR * 0.35 + vdl)
 
 
 def write_wav(path, st):
@@ -510,7 +558,7 @@ def write_wav(path, st):
         w.writeframes(data.tobytes())
 
 
-tmp = os.path.join(OUT, '_tmp')
+tmp = os.path.join(OUT, f'_tmp_{SLUG}')
 os.makedirs(tmp, exist_ok=True)
 write_wav(f'{tmp}/full.wav', full)
 write_wav(f'{tmp}/inst.wav', inst)
