@@ -80,6 +80,29 @@ OUTRO = ["Kumusta ka?", "...'Yung totoo?"]
 if LANG == 'en':
     V1, PRE_L, CH, V2, BR, FC, OUTRO = (EN[k] for k in ('V1', 'PRE_L', 'CH', 'V2', 'BR', 'FC', 'OUTRO'))
     TITLE, HOOK, SLUG, END_MSG = "I'm Fine", "I'm fine, I'm fine", 'im-fine', 'How are you, really?  Check on your people.'
+if LANG == 'bcl':
+    V1 = ["Makusog an uran sa atop", "Si Nanay nagdadasal sa may kandila",
+          "Mayo nin kuryente, mayo nin signal", "Ako sana asin an sakong luha",
+          "Sabi ninda, sanay na kita sa bagyo", "Taga-Bikol, dai nagtatangis",
+          "Pero an bagyo sa laog kan puso ko", "Mayo nin nakakaaram"]
+    PRE_L = ["Kaya kun maghapot ka kun kumusta na ako",
+             "Sasabihon ko man giraray, \"Marhay man ako\""]
+    CH = ["Matapos an bagyo, masirang giraray an aldaw", "Maski ngunyan, garo dai ko na kaya",
+          "Itatangis ko sana an gabos na kulog", "Dangan matindog giraray ako",
+          "Matapos an bagyo, dai na ako matatakot", "Ta an uran, dai man pirmi",
+          "Kun ika man nasa bagyo ngunyan", "Kapot sako, dai taka babayaan"]
+    V2 = ["Si Tatay yaon sa abroad", "Nakikita ko sana sa video call",
+          "Ika na nagsabing dai ka mahali", "Ika man palan an enot na nagbaya",
+          "Nabasa kan uran an satong litrato", "Garo kita, nawara na sana",
+          "Dakul na bagyo an nag-abot sa sakong buhay", "Alagad nakatindog pa man giraray"]
+    BR = ["Bako ako maluya, pagal sana", "Bako ako nagsusuko, nagpapahingalo sana",
+          "Kun sa aga, magmamata pa ako", "Boot sabihon, kaya ko pa ini"]
+    FC = ["Matapos an bagyo, dai na ako magtatago", "Bako ako marhay, asin marhay man iyan",
+          "Itatangis ko an gabos na kulog", "Sa aga, maliwanag giraray an langit",
+          "Kaya ika, na nakangirit man", "Maski pagal, maski makulog",
+          "Dai ka nagsosolo digdi", "Kukugoson taka, totoo"]
+    OUTRO = ["Kumusta ka?", "...An totoo?"]
+    TITLE, HOOK, SLUG, END_MSG = 'Matapos an Bagyo', 'Matapos an bagyo, masirang', 'matapos-an-bagyo', 'Kumusta ka, an totoo?  Hapota man sinda.'
 
 # (label, chords per bar, lyric lines, bars per line, energy, transpose, register lo/hi)
 SECTIONS = [
